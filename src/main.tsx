@@ -1,15 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./styles/index.css";
-import { Provider } from "react-redux";
+
 import { store } from "./store/store";
-import { RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+
 import { router } from "./routes/routes.tsx";
+import { RouterProvider } from "react-router-dom";
+
+import { ThemeProvider } from "@/lib/context/theme-provider.tsx";
+
+import "./styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
 );

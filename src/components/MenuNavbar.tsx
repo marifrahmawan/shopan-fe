@@ -60,7 +60,17 @@ const MenuNavbar = () => {
           <span className="mr-5 hidden h-7 w-7 md:block">
             <Search className="h-full w-full hover:cursor-pointer" />
           </span>
-          <span className="mr-5 hidden h-7 w-7 md:block">
+
+          <span className="relative mr-5 h-7 w-7">
+            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-white">
+              2
+            </span>
+            <FlyoutCart>
+              <ShoppingBag className="h-7 w-7 hover:cursor-pointer" />
+            </FlyoutCart>
+          </span>
+
+          <span className="hidden h-7 w-7 md:block">
             <DropDownUserMenu>
               <Avatar className="h-full w-full">
                 <AvatarImage
@@ -70,14 +80,6 @@ const MenuNavbar = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropDownUserMenu>
-          </span>
-          <span className="relative h-7 w-7">
-            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-white">
-              2
-            </span>
-            <FlyoutCart>
-              <ShoppingBag className="h-full w-full hover:cursor-pointer" />
-            </FlyoutCart>
           </span>
         </div>
       </div>

@@ -13,8 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import shopanLogo from "../assets/img/shopan-logo.png";
-import bagLogo from "../assets/img/bag.svg";
-import searchLogo from "../assets/img/search.svg";
+import { Search, ShoppingBag } from "lucide-react";
 
 type IProps = {
   children: ReactNode;
@@ -40,7 +39,7 @@ const MobileMenu = (props: IProps) => {
           <SheetDescription>
             <form className="mb-4 flex h-12 w-full items-center gap-3 rounded-lg border pl-2">
               <div className="flex h-full items-center">
-                <img src={searchLogo} alt="search" className="h-7 w-7" />
+                <Search className="h-7 w-7" />
               </div>
               <input
                 type="text"
@@ -86,11 +85,7 @@ const MobileMenu = (props: IProps) => {
                   <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-neutral-1">
                     2
                   </span>
-                  <img
-                    src={bagLogo}
-                    alt="bag"
-                    className="h-7 w-7 hover:cursor-pointer"
-                  />
+                  <ShoppingBag className="h-7 w-7 hover:cursor-pointer" />
                 </span>
               </a>
               <a

@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import shopanLogo from "../assets/img/shopan-logo.png";
-import loginImage from "../assets/img/login.png";
-import eyeCloseLogo from "../assets/img/eye-closed.svg";
-import eyeOpenLogo from "../assets/img/eye-open.svg";
+import shopanLogo from "@/assets/img/shopan-logo.png";
+import loginImage from "@/assets/img/login.png";
+import eyeCloseLogo from "@/assets/img/eye-closed.svg";
+import eyeOpenLogo from "@/assets/img/eye-open.svg";
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const showPasswordHandler = () => {
@@ -21,7 +21,7 @@ const Login = () => {
           className="h-full w-full object-cover"
         />
 
-        <div className="absolute top-0 lg:flex justify-center w-full hidden">
+        <div className="absolute top-0 hidden w-full justify-center lg:flex">
           <img src={shopanLogo} alt="Shopan Logo" className="h-28 w-28" />
         </div>
       </div>
@@ -29,9 +29,9 @@ const Login = () => {
       <div className="flex w-[100%] items-center md:ml-[88px] md:mt-[220px] md:w-[50%] md:items-start">
         <div className="w-[456px] p-9 md:p-0">
           <h4 className="mb-[24px]">Sign Up</h4>
-          <p className="text-neutral-4 mb-8 text-[16px]">
+          <p className="mb-8 text-[16px] text-neutral-4">
             Already have an account?{" "}
-            <a href="./" className="text-secondary-green font-medium">
+            <a href="./" className="font-medium text-secondary-green">
               Sign In
             </a>
           </p>
@@ -39,23 +39,23 @@ const Login = () => {
             <input
               type="text"
               placeholder="Your name"
-              className="ring-secondary-green mb-8 w-full border-b px-4 py-3 focus:rounded-md focus:outline-none focus:ring"
+              className="mb-8 w-full border-b px-4 py-3 ring-secondary-green focus:rounded-md focus:outline-none focus:ring"
             />
             <input
               type="text"
               placeholder="Username"
-              className="ring-secondary-green mb-8 w-full border-b px-4 py-3 focus:rounded-md focus:outline-none focus:ring"
+              className="mb-8 w-full border-b px-4 py-3 ring-secondary-green focus:rounded-md focus:outline-none focus:ring"
             />
             <input
               type="email"
               placeholder="Email address"
-              className="ring-secondary-green mb-8 w-full border-b px-4 py-3 focus:rounded-md focus:outline-none focus:ring"
+              className="mb-8 w-full border-b px-4 py-3 ring-secondary-green focus:rounded-md focus:outline-none focus:ring"
             />
             <div className="relative flex items-center justify-between">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="ring-secondary-green w-full border-b px-4 py-3 focus:rounded-md focus:outline-none focus:ring"
+                className="w-full border-b px-4 py-3 ring-secondary-green focus:rounded-md focus:outline-none focus:ring"
               />
               <button
                 type="button"
@@ -73,14 +73,14 @@ const Login = () => {
               <input type="checkbox" className="mr-3 h-6 w-6 transform" />
               <p className="text-neutral-4">
                 I agree with{" "}
-                <span className="text-primary font-medium">Privacy Policy</span>{" "}
+                <span className="font-medium text-primary">Privacy Policy</span>{" "}
                 and{" "}
-                <span className="text-primary font-medium">Terms of Use</span>
+                <span className="font-medium text-primary">Terms of Use</span>
               </p>
             </div>
             <button
               type="submit"
-              className="bg-neutral-7 text-neutral-1 hover:bg-neutral-4 w-full rounded-lg py-3 font-medium"
+              className="w-full rounded-lg bg-neutral-7 py-3 font-medium text-neutral-1 hover:bg-neutral-4"
             >
               Sign Up
             </button>
@@ -91,4 +91,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
