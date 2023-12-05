@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
+
 interface IProducts {
   id: number;
   productImage: string;
@@ -20,7 +23,7 @@ const CardProduct = ({
 
   return (
     <div className="col-auto h-fit">
-      <div className="relative mb-3 h-[200px] md:h-[349px] w-full">
+      <div className="relative mb-3 h-[200px] w-full md:h-[349px]">
         <img
           src={productImage}
           alt="table lamp"
@@ -28,18 +31,18 @@ const CardProduct = ({
         />
         <div className="absolute top-0 flex w-full justify-between pl-4 pr-4 pt-4">
           <span>
-            <p className="mb-1 rounded-md bg-neutral-1 px-3 py-1 text-center text-xs font-bold">
+            <p className="mb-1 rounded-md bg-slate-300 px-3 py-1 text-center text-xs font-bold text-black">
               New
             </p>
-            <p className="rounded-md bg-secondary-green px-3 py-1 text-center text-xs font-bold">
+            <p className="bg-secondary-green rounded-md px-3 py-1 text-center text-xs font-bold">
               -50%
             </p>
           </span>
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-1 hover:cursor-pointer">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white hover:cursor-pointer">
             <svg
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 fill-transparent stroke-neutral-7 hover:fill-red-800 hover:stroke-red-800"
+              className="h-5 w-5 fill-transparent stroke-gray-500 hover:fill-red-800 hover:stroke-red-800"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
@@ -75,19 +78,21 @@ const CardProduct = ({
           </g>
         </svg>
       </div>
-      <p className="mb-1 font-semibold">{productName}</p>
+      <Link to={`/product/${id}`}>
+        <p className="mb-1 font-semibold hover:underline">{productName}</p>
+      </Link>
       <div className="flex gap-3 text-sm">
-        <p className="font-semibold text-neutral-7">${price}</p>
+        <p className="text-secondary-green font-semibold">${price}</p>
         <p className="text-neutral-400 line-through">$400.00</p>
       </div>
-      <button
-        className="w-full mt-5 rounded-lg bg-neutral-7 py-2 text-white hover:bg-neutral-6"
+      <Button
+        className="mt-5 w-full rounded-lg py-2"
         onClick={() => {
           addToCart(id);
         }}
       >
         Add to cart
-      </button>
+      </Button>
     </div>
   );
 };

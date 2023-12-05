@@ -8,11 +8,11 @@ import { MenuIcon, Search, ShoppingBag } from "lucide-react";
 
 import FlyoutCart from "./FlyoutCart";
 import MobileMenu from "./MobileMenu";
-import DropDownUserMenu from "./DropDownUserMen";
+import DropDownUserMenu from "./DropDownUserMenu";
 
 const MenuNavbar = () => {
   return (
-    <div className="sticky top-0 z-10 flex w-full bg-white/90">
+    <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-bg-dark-mode">
       <div className="container flex h-16 items-center justify-between ">
         <div className="h-6">
           <MobileMenu>
@@ -62,7 +62,7 @@ const MenuNavbar = () => {
           </span>
 
           <span className="relative mr-5 h-7 w-7">
-            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-white">
+            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-white dark:text-black font-bold dark:bg-white">
               2
             </span>
             <FlyoutCart>

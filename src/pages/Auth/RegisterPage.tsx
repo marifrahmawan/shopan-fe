@@ -4,6 +4,7 @@ import shopanLogo from "@/assets/img/shopan-logo.png";
 import loginImage from "@/assets/img/login.png";
 import eyeCloseLogo from "@/assets/img/eye-closed.svg";
 import eyeOpenLogo from "@/assets/img/eye-open.svg";
+import { Button } from "@/components/ui/button";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -78,12 +79,12 @@ const Register = () => {
                 <span className="font-medium text-primary">Terms of Use</span>
               </p>
             </div>
-            <button
+            <Button
               type="submit"
-              className="w-full rounded-lg bg-neutral-7 py-3 font-medium text-neutral-1 hover:bg-neutral-4"
+              className="w-full rounded-lg py-3 font-medium hover:bg-neutral-4"
             >
               Sign Up
-            </button>
+            </Button>
           </form>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { router } from "./routes/routes.tsx";
 import { RouterProvider } from "react-router-dom";
 
-import { ThemeProvider } from "@/lib/context/theme-provider.tsx";
+import { ThemeProvider } from "@/utils/context/theme-provider.tsx";
 
 import "./styles/index.css";
 

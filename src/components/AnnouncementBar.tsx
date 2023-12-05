@@ -3,7 +3,7 @@ import ticketPercentLogo from "../assets/img/ticket-percent.svg";
 const AnnouncementBar = () => {
   return (
     <div className="flex items-center justify-center gap-3 bg-neutral-2 py-2 text-neutral-5">
-      <img src={ticketPercentLogo} alt="" />
+      <img src={ticketPercentLogo} alt="discount" />
       <span className="text-[14px] font-medium">
         <p>30% off storewide - Limited time!{""}</p>
       </span>

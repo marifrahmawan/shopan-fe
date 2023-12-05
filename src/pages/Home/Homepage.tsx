@@ -10,12 +10,8 @@ import kitchenRoomImage from "../../assets/img/kitchen.jpg";
 import banner from "../../assets/img/spacejoy-c0JoR_-2x3E-unsplash.jpg";
 import bgNewsletter from "../../assets/img/alex-plesovskich-iRMlWAOzwtM-unsplash.jpg";
 
-import shippingTruck from "../../assets/img/shipping-truck.svg";
-import moneyReturn from "../../assets/img/money.svg";
-import lockSecure from "../../assets/img/lock.svg";
-import callSupport from "../../assets/img/call-receive.svg";
-import email from "../../assets/img/email-9-svgrepo-com.svg";
 import Footer from "../../components/Footer";
+import { Banknote, Lock, Mail, Phone, Truck } from "lucide-react";
 
 const Homepage = () => {
   return (
@@ -26,15 +22,16 @@ const Homepage = () => {
         <section>
           <h2 className="text-[30px] leading-8 md:text-[35px] lg:text-[45px] lg:leading-none xl:text-[72px]">
             Simply Unique
-            <span className="text-[32px] text-neutral-4 md:text-[37px] lg:text-[47px] xl:text-[84px]">
+            <span className="text-[32px] text-slate-400 md:text-[37px] lg:text-[47px] xl:text-[84px]">
               /
             </span>
             <p>Simply Better</p>
           </h2>
         </section>
-        <section className="mt-2 w-[full] text-neutral-4 md:mt-0 md:w-[350px] xl:w-[453px]">
-          <span className="font-medium text-neutral-5">Shopan</span> is a gift &
-          decorations store based in Jakarta, Indonesia. Est since 2019.
+        <section className="mt-2 w-[full] text-slate-500 md:mt-0 md:w-[350px] xl:w-[453px]">
+          <span className="font-medium text-black dark:text-white">Shopan</span>{" "}
+          is a gift & decorations store based in Jakarta, Indonesia. Est since
+          2019.
         </section>
       </div>
 
@@ -47,11 +44,11 @@ const Homepage = () => {
               className="h-full w-full object-cover"
             />
 
-            <div className="absolute left-12 top-12 bg-slate-700/80 p-3 text-neutral-3">
-              <h5>Living Room</h5>
+            <div className="text-neutral-3 absolute left-12 top-12 bg-black/60 p-3">
+              <h5 className="font-medium text-white">Living Room</h5>
               <a
                 href="./"
-                className="mt-4 border-b border-white font-medium hover:border-neutral-4 hover:text-neutral-4"
+                className="mt-4 border-b border-gray-300 font-medium text-gray-300 hover:border-slate-400 hover:text-slate-400"
               >
                 Shop Now &#10141;
               </a>
@@ -66,11 +63,11 @@ const Homepage = () => {
               alt="bed room"
               className="h-full w-full object-cover"
             />
-            <div className="absolute left-12 top-12 bg-slate-700/80 p-3 text-neutral-3">
-              <h5>Bed Room</h5>
+            <div className="text-neutral-3 absolute left-12 top-12 bg-black/60 p-3">
+              <h5 className="font-medium text-white">Bed Room</h5>
               <a
                 href="./"
-                className="mt-4 border-b border-white font-medium hover:border-neutral-4 hover:text-neutral-4"
+                className="mt-4 border-b border-gray-300 font-medium text-gray-300 hover:border-slate-400 hover:text-slate-400"
               >
                 Shop Now &#10141;
               </a>
@@ -82,11 +79,11 @@ const Homepage = () => {
               alt="kitchen"
               className="h-full w-full object-cover"
             />
-            <div className="absolute left-12 top-12 bg-slate-700/80 p-3 text-neutral-3">
-              <h5>Kitchen</h5>
+            <div className="text-neutral-3 absolute left-12 top-12 bg-black/60 p-3">
+              <h5 className="font-medium text-white">Kitchen</h5>
               <a
                 href="./"
-                className="mt-4 border-b border-white font-medium hover:border-neutral-4 hover:text-neutral-4"
+                className="mt-4 border-b border-gray-300 font-medium text-gray-300 hover:border-slate-400 hover:text-slate-400"
               >
                 Shop Now &#10141;
               </a>
@@ -99,7 +96,7 @@ const Homepage = () => {
         <div className="w-[149px]">
           <h4>New Arrivals</h4>
         </div>
-        <div className="flex items-end border-b border-neutral-7">
+        <div className="border-neutral-7 flex items-end border-b">
           <a href="./" className="font-medium">
             More Products &#10141;
           </a>
@@ -122,63 +119,47 @@ const Homepage = () => {
       </div>
 
       <div className="mb-12 grid grid-cols-2 gap-6 lg:grid-cols-4">
-        <div className="col-auto border bg-neutral-2 px-8 py-4 md:py-12">
+        <div className="col-auto border bg-gray-200 px-8 py-4 dark:bg-slate-800 md:py-12">
           <div className="mb-2 h-9 w-9 md:mb-4 md:h-12 md:w-12">
-            <img
-              src={shippingTruck}
-              alt="shipping truck"
-              className="h-full w-full object-cover"
-            />
+            <Truck className="h-full w-full" />
           </div>
           <p className="mb-2 text-[16px] font-medium md:text-[20px]">
             Free Shipping
           </p>
-          <p className="text-[12px] text-neutral-4 md:text-[14px]">
+          <p className="text-[12px] text-slate-400 md:text-[14px]">
             Order above $200
           </p>
         </div>
-        <div className="col-auto border bg-neutral-2 px-8 py-4 md:py-12">
+        <div className="col-auto border bg-gray-200 px-8 py-4 dark:bg-slate-800 md:py-12">
           <div className="mb-2 h-9 w-9 md:mb-4 md:h-12 md:w-12">
-            <img
-              src={moneyReturn}
-              alt="shipping truck"
-              className="h-full w-full object-cover"
-            />
+            <Banknote className="h-full w-full object-cover" />
           </div>
           <p className="mb-2 text-[16px] font-medium md:text-[20px]">
             Money-back
           </p>
-          <p className="text-[12px] text-neutral-4 md:text-[14px]">
+          <p className="text-[12px] text-slate-400 md:text-[14px]">
             30 days guarantee
           </p>
         </div>
-        <div className="col-auto border bg-neutral-2 px-8 py-4 md:py-12">
+        <div className="col-auto border bg-gray-200 px-8 py-4 dark:bg-slate-800 md:py-12">
           <div className="mb-2 h-9 w-9 md:mb-4 md:h-12 md:w-12">
-            <img
-              src={lockSecure}
-              alt="shipping truck"
-              className="h-full w-full object-cover"
-            />
+            <Lock className="h-full w-full" />
           </div>
           <p className="mb-2 text-[16px] font-medium md:text-[20px]">
             Secure Payments
           </p>
-          <p className="text-[12px] text-neutral-4 md:text-[14px]">
+          <p className="text-[12px] text-slate-400 md:text-[14px]">
             Secured by Stripe
           </p>
         </div>
-        <div className="col-auto border bg-neutral-2 px-8 py-4 md:py-12">
+        <div className="col-auto border bg-gray-200 px-8 py-4 dark:bg-slate-800 md:py-12">
           <div className="mb-2 h-9 w-9 md:mb-4 md:h-12 md:w-12">
-            <img
-              src={callSupport}
-              alt="shipping truck"
-              className="h-full w-full object-cover"
-            />
+            <Phone className="h-full w-full" />
           </div>
           <p className="mb-2 text-[16px] font-medium md:text-[20px]">
             24/7 Support
           </p>
-          <p className="text-[12px] text-neutral-4 md:text-[14px]">
+          <p className="text-[12px] text-slate-400 md:text-[14px]">
             Phone and Email support
           </p>
         </div>
@@ -194,18 +175,20 @@ const Homepage = () => {
         </div>
         <div className="flex h-full w-full items-center p-5 md:w-1/2 md:pl-[72px]">
           <div className="w-[452px]">
-            <p className="mb-4 text-left font-bold text-secondary-blue">
+            <p className="text-secondary-blue mb-4 text-left font-bold">
               SALE UP TO 35% OFF
             </p>
-            <h4>HUNDREDS of</h4>
-            <h4>New Lower prices!</h4>
+            <span className="leading-10">
+              <h4 className="font-medium">HUNDREDS of</h4>
+              <h4 className="font-medium">New Lower prices!</h4>
+            </span>
             <p className="mb-6 mt-4 text-[20px] leading-8">
               It's more affordable than ever to give every room in your home a
               stylish makeover
             </p>
             <a
               href="./"
-              className="border-b border-black font-medium hover:border-neutral-4 hover:text-neutral-4"
+              className="border-b border-black font-medium hover:border-slate-400 hover:text-slate-400"
             >
               Shop now &#10141;
             </a>
@@ -216,7 +199,7 @@ const Homepage = () => {
       <div className="mb-10 flex items-end justify-between">
         <h4>Articles</h4>
         <span>
-          <a href="./" className="border-b border-neutral-7 font-medium">
+          <a href="./" className="border-neutral-7 border-b font-medium">
             More Articles &#10141;
           </a>
         </span>
@@ -241,20 +224,20 @@ const Homepage = () => {
           className="hidden h-full w-full object-cover object-center md:block"
         />
         <div className="absolute top-0 flex h-full w-full items-center justify-center">
-          <div className="flex flex-col items-center justify-center rounded-md bg-neutral-1 bg-opacity-20 p-5 pb-6 backdrop-blur-sm md:p-7">
+          <div className="bg-white/40 dark:bg-black/40 flex flex-col items-center justify-center rounded-md bg-opacity-20 p-5 pb-6 backdrop-blur-sm md:p-7">
             <h4 className="mb-2 text-2xl md:text-[40px]">
               Join Our Newsletter
             </h4>
             <p className="mb-8 text-center">
               Sign up for deals, new product and promotions
             </p>
-            <div className="flex w-full items-center justify-center border-b border-neutral-4 md:w-96">
+            <div className="flex w-full items-center justify-center border-b border-black dark:border-white md:w-96">
               <div className="h-6 w-6">
-                <img src={email} alt="email logo" className="h-full w-full" />
+                <Mail />
               </div>
               <input
                 type="text"
-                className="w-full bg-transparent px-3 py-2 text-[14px] focus:outline-none"
+                className="w-full bg-transparent px-3 py-2 text-[14px] focus:outline-none text-black placeholder:text-gray-300"
                 placeholder="Email address"
               />
             </div>

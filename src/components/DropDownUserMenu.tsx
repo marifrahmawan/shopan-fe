@@ -15,7 +15,7 @@ import {
 
 import { Sun, Moon, Computer } from "lucide-react";
 
-import { useTheme } from "@/lib/context/theme-provider";
+import { useTheme } from "@/utils/context/theme-provider";
 
 type IProps = {
   children: ReactNode;
