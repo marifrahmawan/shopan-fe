@@ -5,17 +5,7 @@ import { useParams } from "react-router-dom";
 import ProductCarousel from "@/components/ProductCarousel";
 
 import { products } from "@/data";
-import {
-  Circle,
-  Heart,
-  Minus,
-  MinusSquare,
-  Plus,
-  PlusSquare,
-  ShoppingCart,
-  Star,
-  icons,
-} from "lucide-react";
+import { Circle, Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface IProducts {
