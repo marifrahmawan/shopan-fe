@@ -3,10 +3,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import ProductCarousel from "@/components/ProductCarousel";
+import { Button } from "@/components/ui/button";
 
 import { products } from "@/data";
 import { Circle, Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProductReviews from "@/components/ProductReviews";
+import ProductQuestions from "@/components/ProductQuestions";
+import Footer from "@/components/Footer";
 
 interface IProducts {
   id: number;
@@ -35,16 +39,16 @@ const Product = () => {
       <div className="flex flex-col gap-12 lg:flex-row">
         <div className="flex-1">
           <ProductCarousel>
-            <div className="aspect-auto h-[300px] object-cover md:h-[700px]">
+            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
               <img src={product?.productImage} className="h-full" />
             </div>
-            <div className="aspect-auto h-[300px] object-cover md:h-[700px]">
+            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
               <img src={product?.productImage} className="h-full" />
             </div>
-            <div className="aspect-auto h-[300px] object-cover md:h-[700px]">
+            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
               <img src={product?.productImage} className="h-full" />
             </div>
-            <div className="aspect-auto h-[300px] object-cover md:h-[700px]">
+            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
               <img src={product?.productImage} className="h-full" />
             </div>
           </ProductCarousel>
@@ -61,7 +65,7 @@ const Product = () => {
               <p className="ml-4 text-[18px] font-medium">11 Reviews</p>
             </div>
             <h4 className="mt-3 font-medium">{product?.productName}</h4>
-            <p className="mt-3 text-[16px] text-neutral-400">
+            <p className="mt-3 text-[14px] text-neutral-500 dark:text-neutral-400">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
               repellat voluptas optio totam! Nam repudiandae harum voluptatibus
               esse numquam quam, qui optio mollitia quos! Quos esse fugit
@@ -111,11 +115,11 @@ const Product = () => {
           <div className="mt-5">
             <p>Choose colors</p>
             <section className="mt-1 flex gap-2">
-              <Circle className="h-[30px] w-[30px] fill-black stroke-black hover:cursor-pointer" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-green stroke-secondary-green hover:cursor-pointer" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-blue stroke-secondary-blue hover:cursor-pointer" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-orange stroke-secondary-orange hover:cursor-pointer" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-red stroke-secondary-red hover:cursor-pointer" />
+              <Circle className="h-[30px] w-[30px] fill-black stroke-black hover:cursor-pointer dark:stroke-white" />
+              <Circle className="h-[30px] w-[30px] fill-secondary-green stroke-secondary-green hover:cursor-pointer dark:stroke-white" />
+              <Circle className="h-[30px] w-[30px] fill-secondary-blue stroke-secondary-blue hover:cursor-pointer dark:stroke-white" />
+              <Circle className="h-[30px] w-[30px] fill-secondary-orange stroke-secondary-orange hover:cursor-pointer dark:stroke-white" />
+              <Circle className="h-[30px] w-[30px] fill-secondary-red stroke-secondary-red hover:cursor-pointer dark:stroke-white" />
             </section>
           </div>
 
@@ -160,8 +164,37 @@ const Product = () => {
               <ShoppingCart /> <p className="pl-4">Add to Cart</p>
             </Button>
           </div>
+          <div className="mt-5 flex gap-7 pb-5 text-[12px]">
+            <p className="font-medium">Category</p>
+            <p className="text-neutral-400">Living Room, Bedroom</p>
+          </div>
         </div>
       </div>
+
+      <Tabs defaultValue="reviews" className="w-full">
+        <TabsList className="w-full justify-start p-0">
+          <TabsTrigger
+            value="reviews"
+            className="h-full rounded-none border-black data-[state=active]:border-b data-[state=active]:bg-transparent dark:border-white lg:w-[220px] lg:p-0"
+          >
+            Reviews
+          </TabsTrigger>
+          <TabsTrigger
+            value="questions"
+            className="h-full rounded-none border-black data-[state=active]:border-b data-[state=active]:bg-transparent dark:border-white lg:w-[220px] lg:p-0"
+          >
+            Questions
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="reviews">
+          <ProductReviews />
+        </TabsContent>
+        <TabsContent value="questions">
+          <ProductQuestions />
+        </TabsContent>
+      </Tabs>
+
+      <Footer />
     </div>
   );
 };

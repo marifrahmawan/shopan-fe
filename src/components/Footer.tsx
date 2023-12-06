@@ -3,7 +3,7 @@ import shopanLogo from "../assets/img/shopan-logo.png";
 
 const Footer = () => {
   return (
-    <div className="px-5 pb-8 pt-20 lg:px-40">
+    <div className="px-5 lg:px-0 pb-8 pt-20">
       <div className="flex flex-col justify-between md:flex-row">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <div className="h-10 w-10 rounded-full bg-white ">
