@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { ScrollRestoration, useParams } from "react-router-dom";
 
 import ProductCarousel from "@/components/ProductCarousel";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,7 @@ const Product = () => {
 
   return (
     <div className="container">
+      <ScrollRestoration />
       <div className="flex flex-col gap-12 lg:flex-row">
         <div className="flex-1">
           <ProductCarousel>
