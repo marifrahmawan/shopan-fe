@@ -11,7 +11,7 @@ type IProps = {
 const ProductCarousel = ({ children }: IProps) => {
   return (
     <Carousel
-    className="text-center"
+      className="text-center cursor-grab"
       showStatus={false}
       infiniteLoop={true}
       emulateTouch={true}

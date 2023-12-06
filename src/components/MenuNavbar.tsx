@@ -61,7 +61,7 @@ const MenuNavbar = () => {
             <Search className="h-full w-full hover:cursor-pointer" />
           </span>
 
-          <span className="relative mr-5 h-7 w-7">
+          <span className="relative md:mr-5 h-7 w-7">
             <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-white dark:text-black font-bold dark:bg-white">
               2
             </span>
