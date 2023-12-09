@@ -12,6 +12,7 @@ import bgNewsletter from "../../assets/img/alex-plesovskich-iRMlWAOzwtM-unsplash
 
 import Footer from "../../components/Footer";
 import { Banknote, Lock, Mail, Phone, Truck } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Homepage = () => {
   return (
@@ -97,9 +98,9 @@ const Homepage = () => {
           <h4>New Arrivals</h4>
         </div>
         <div className="border-neutral-7 flex items-end border-b">
-          <a href="./" className="font-medium">
+          <Link to="/shop" className="font-medium">
             More Products &#10141;
-          </a>
+          </Link>
         </div>
       </div>
 

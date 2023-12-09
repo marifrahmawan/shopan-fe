@@ -12,7 +12,7 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1800px",
+        "2xl": "1400px",
       },
     },
     extend: {
@@ -54,7 +54,6 @@ module.exports = {
         "secondary-green": "#38CB89",
         "secondary-orange": "#FFAB00",
         "secondary-red": "#FF5630",
-        "bg-dark-mode": '#09090B'
       },
       borderRadius: {
         lg: "var(--radius)",

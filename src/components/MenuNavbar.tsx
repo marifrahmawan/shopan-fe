@@ -1,18 +1,42 @@
+import * as z from "zod";
 import { NavLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import shopanLogo from "../assets/img/shopan-logo.png";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import { MenuIcon, Search, ShoppingBag } from "lucide-react";
 
 import FlyoutCart from "./FlyoutCart";
 import MobileMenu from "./MobileMenu";
 import DropDownUserMenu from "./DropDownUserMenu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+const searchSchema = z.object({
+  search: z.string().min(1, { message: "Enter product name" }),
+});
+
+type SearchType = z.infer<typeof searchSchema>;
 
 const MenuNavbar = () => {
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<SearchType>({
+    resolver: zodResolver(searchSchema),
+    defaultValues: {
+      search: "",
+    },
+  });
+
+  const searchHandler = (values: SearchType) => {
+    console.log(values);
+    reset()
+  };
+
   return (
-    <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-bg-dark-mode">
+    <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-background">
       <div className="container flex h-16 items-center justify-between ">
         <div className="h-6">
           <MobileMenu>
@@ -20,7 +44,7 @@ const MenuNavbar = () => {
           </MobileMenu>
         </div>
         <div className="hidden flex-1 items-center md:flex">
-          <NavLink to="/">
+          <NavLink to="/" className="dark:bg-white rounded-full">
             <img
               src={shopanLogo}
               alt="shopan logo"
@@ -28,41 +52,30 @@ const MenuNavbar = () => {
             />
           </NavLink>
         </div>
-        <div className="flex-2 hidden justify-center md:flex">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive
-                ? "text-neutral mr-10 font-semibold"
-                : "mr-10 font-normal text-neutral-4"
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/shop"
-            className={({ isActive }) =>
-              isActive
-                ? "mr-10 font-semibold text-neutral-6"
-                : "mr-10 font-normal text-neutral-4"
-            }
-          >
-            Shop
-          </NavLink>
-          <a href="./" className="mr-10 text-neutral-4">
-            Product
-          </a>
-          <a href="./" className="text-neutral-4">
-            Contact Us
-          </a>
-        </div>
-        <div className="flex flex-1 items-center justify-end">
-          <span className="mr-5 hidden h-7 w-7 md:block">
-            <Search className="h-full w-full hover:cursor-pointer" />
-          </span>
 
-          <span className="relative md:mr-5 h-7 w-7">
-            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] text-white dark:text-black font-bold dark:bg-white">
+        <form onSubmit={handleSubmit(searchHandler)} className="hidden md:block">
+          <div className="flex h-[40px] w-[500px] lg:w-[700px] overflow-hidden rounded-full border items-center pr-3 dark:border-bg-white">
+            <input
+              type="text"
+              id="search"
+              className="w-full pl-5 focus:outline-none h-full dark:bg-background"
+              disabled={isSubmitting}
+              placeholder="Search products..."
+              autoComplete="off"
+              {...register("search")}
+            />
+            <Search className="h-7 w-7 hover:cursor-pointer" />
+          </div>
+          {errors.search && (
+            <p className="h-6 pl-5 text-[14px] text-red-500">
+              {errors.search?.message}
+            </p>
+          )}
+        </form>
+
+        <div className="flex flex-1 items-center justify-end">
+          <span className="relative h-7 w-7 md:mr-5">
+            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] font-bold text-white dark:bg-white dark:text-black">
               2
             </span>
             <FlyoutCart>

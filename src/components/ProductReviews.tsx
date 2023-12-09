@@ -1,4 +1,4 @@
-import { IReview, reviewSchema } from "@/utils/review";
+import { IReview, reviewSchema } from "@/utils/api/review";
 
 import { SlidersHorizontal, Star } from "lucide-react";
 

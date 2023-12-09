@@ -16,6 +16,7 @@ import {
 import { Sun, Moon, Computer } from "lucide-react";
 
 import { useTheme } from "@/utils/context/theme-provider";
+import { Link } from "react-router-dom";
 
 type IProps = {
   children: ReactNode;
@@ -67,6 +68,11 @@ const DropDownUserMenu = (props: IProps) => {
         <DropdownMenuItem>Cart</DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuSeparator />
+        <Link to={`/register`}>
+          <DropdownMenuItem className="hover:cursor-pointer">
+            Register
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem>Login</DropdownMenuItem>
         <DropdownMenuItem>Logout</DropdownMenuItem>
       </DropdownMenuContent>
