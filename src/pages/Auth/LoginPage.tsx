@@ -10,12 +10,12 @@ import shopanLogo from "@/assets/img/shopan-logo.png";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { IRegister, registerSchema, registerUser } from "@/utils/api/auth";
+import { ILogin, loginSchema, loginUser } from "@/utils/api/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Link, useNavigate } from "react-router-dom";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -23,36 +23,32 @@ const RegisterPage = () => {
   const {
     handleSubmit,
     register,
-    reset,
+
     formState: { errors, isSubmitting },
-  } = useForm<IRegister>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<ILogin>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      fullName: "",
-      userName: "",
       email: "",
       password: "",
-      repassword: "",
     },
   });
 
-  const registerHandler = async (values: IRegister) => {
+  const loginHandler = async (values: ILogin) => {
     try {
-      const res = await registerUser(values);
+      const res = await loginUser(values);
 
       toast({
         title: res?.message,
-        description: "Profile Created",
+        description: "Logged in",
       });
+
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Something went wrong",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      reset();
-      navigate("/login");
     }
   };
 
@@ -77,48 +73,26 @@ const RegisterPage = () => {
 
       <div className="flex w-[100%] items-center md:ml-[88px] md:mt-[220px] md:w-[50%] md:items-start">
         <div className="w-[600px] p-9 md:p-0">
-          <h4 className="mb-[24px]">Register</h4>
+          <h4 className="mb-[24px]">Login</h4>
           <p className="text-neutral-4 mb-8 text-[16px]">
-            Already have an account?{" "}
-            <Link to={`/login`} className="font-medium text-secondary-green">
-              Login
+            Don't have an account?{" "}
+            <Link to={`/register`} className="font-medium text-secondary-green">
+              Register
             </Link>
           </p>
-          <form onSubmit={handleSubmit(registerHandler)}>
-            <div className="mb-5">
-              <Input
-                name="fullName"
-                type="text"
-                placeholder="Full Name"
-                isSubmitting={isSubmitting}
-                register={register("fullName")}
-                errors={errors.fullName}
-              />
-            </div>
-
-            <div className="mb-5">
-              <Input
-                name="userName"
-                type="text"
-                placeholder="User Name"
-                isSubmitting={isSubmitting}
-                register={register("userName")}
-                errors={errors.userName}
-              />
-            </div>
-
+          <form onSubmit={handleSubmit(loginHandler)}>
             <div className="mb-5">
               <Input
                 name="email"
                 type="email"
-                placeholder="mail@mail.com"
+                placeholder="Email"
                 isSubmitting={isSubmitting}
                 register={register("email")}
                 errors={errors.email}
               />
             </div>
 
-            <div className="flex justify-between gap-2">
+            <div className="mb-9 flex justify-between gap-2">
               <Input
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -126,15 +100,6 @@ const RegisterPage = () => {
                 isSubmitting={isSubmitting}
                 register={register("password")}
                 errors={errors.password}
-              />
-
-              <Input
-                name="repassword"
-                type={showPassword ? "text" : "password"}
-                placeholder="Repassword"
-                isSubmitting={isSubmitting}
-                register={register("repassword")}
-                errors={errors.repassword}
               />
 
               <button
@@ -149,22 +114,14 @@ const RegisterPage = () => {
                 )}
               </button>
             </div>
-            <div className="mb-8 mt-7 flex items-center">
-              <input type="checkbox" className="mr-3 h-6 w-6 transform" />
-              <p className="text-neutral-4">
-                I agree with{" "}
-                <span className="font-medium text-primary">Privacy Policy</span>{" "}
-                and{" "}
-                <span className="font-medium text-primary">Terms of Use</span>
-              </p>
-            </div>
+
             <Button
               type="submit"
               className="hover:bg-neutral-4 w-full rounded-lg py-3 font-medium"
               disabled={isSubmitting}
               aria-disabled={isSubmitting}
             >
-              {isSubmitting ? <Loader2 className="animate-spin" /> : "Register"}
+              {isSubmitting ? <Loader2 className="animate-spin" /> : "Login"}
             </Button>
           </form>
         </div>
@@ -173,4 +130,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

@@ -6,7 +6,15 @@ import ProductCarousel from "@/components/ProductCarousel";
 import { Button } from "@/components/ui/button";
 
 import { products } from "@/data";
-import { Circle, Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import {
+  Circle,
+  Dot,
+  Heart,
+  Minus,
+  Plus,
+  ShoppingCart,
+  Star,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductReviews from "@/components/ProductReviews";
 import ProductQuestions from "@/components/ProductQuestions";
@@ -57,15 +65,21 @@ const Product = () => {
 
         <div className="flex-1">
           <div className="border-6eutral-400 border-b pb-4">
-            <div className="flex items-center">
-              <Star className="w h-[18px] w-[18px] fill-yellow-500 stroke-yellow-500" />
-              <Star className="h-[18px] w-[18px] fill-yellow-500 stroke-yellow-500" />
-              <Star className="h-[18px] w-[18px] fill-yellow-500 stroke-yellow-500" />
-              <Star className="h-[18px] w-[18px] fill-yellow-500 stroke-yellow-500" />
-              <Star className="h-[18px] w-[18px] fill-yellow-500 stroke-yellow-500" />
-              <p className="ml-4 text-[18px] font-medium">11 Reviews</p>
+            <h4 className="font-medium">{product?.productName}</h4>
+            <div className="flex">
+              <div className="flex items-center">
+                <Star className="w h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
+                <Star className="h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
+                <Star className="h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
+                <Star className="h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
+                <Star className="h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
+                <p className="ml-4 font-medium">11 Reviews</p>
+              </div>
+              <Dot />
+              <p className="font-medium">0 Sold</p>
+              <Dot />
+              <p className="font-medium text-secondary-green">10 in Stocks</p>
             </div>
-            <h4 className="mt-3 font-medium">{product?.productName}</h4>
             <p className="mt-3 text-[14px] text-neutral-500 dark:text-neutral-400">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
               repellat voluptas optio totam! Nam repudiandae harum voluptatibus

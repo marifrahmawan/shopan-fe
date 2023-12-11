@@ -1,7 +1,7 @@
 import sliderPic from "@/assets/img/slider.jpg";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 
-const Slider = () => {
+const AdsSlider = () => {
   return (
     <div className="relative mb-8 flex h-[250px] w-full items-center md:h-[536px]">
       <span className="absolute left-4 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900 opacity-70 hover:cursor-pointer md:left-8 md:h-10 md:w-10">
@@ -21,4 +21,4 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default AdsSlider;

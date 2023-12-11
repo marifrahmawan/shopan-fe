@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
-import MenuNavbar from "./MenuNavbar";
-import AnnouncementBar from "./AnnouncementBar";
+import MenuNavbar from "../MenuNavbar";
+import AnnouncementBar from "../AnnouncementBar";
+import { Toaster } from "../ui/toaster";
 
 const RootLayout = () => {
   return (
@@ -8,6 +9,7 @@ const RootLayout = () => {
       <AnnouncementBar />
       <MenuNavbar />
       <Outlet />
+      <Toaster />
     </div>
   );
 };

@@ -1,23 +1,23 @@
 import { products, articles } from "../../data";
 
-import Slider from "./Slider";
-import CardProduct from "../../components/CardProduct";
-import CardArticle from "../../components/CardArticle";
+import AdsSlider from "@/components/AdsSlider";
+import CardProduct from "@/components/CardProduct";
+import CardArticle from "@/components/CardArticle";
 
-import livingRoomImage from "../../assets/img/living-room.jpg";
-import bedRoomImage from "../../assets/img/bedroom.jpg";
-import kitchenRoomImage from "../../assets/img/kitchen.jpg";
-import banner from "../../assets/img/spacejoy-c0JoR_-2x3E-unsplash.jpg";
-import bgNewsletter from "../../assets/img/alex-plesovskich-iRMlWAOzwtM-unsplash.jpg";
+import livingRoomImage from "@/assets/img/living-room.jpg";
+import bedRoomImage from "@/assets/img/bedroom.jpg";
+import kitchenRoomImage from "@/assets/img/kitchen.jpg";
+import banner from "@/assets/img/spacejoy-c0JoR_-2x3E-unsplash.jpg";
+import bgNewsletter from "@/assets/img/alex-plesovskich-iRMlWAOzwtM-unsplash.jpg";
 
-import Footer from "../../components/Footer";
+import Footer from "@/components/Footer";
 import { Banknote, Lock, Mail, Phone, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Homepage = () => {
   return (
     <div className="container">
-      <Slider />
+      <AdsSlider />
 
       <div className="mb-10 flex flex-col items-start justify-between md:flex-row md:items-center">
         <section>

@@ -38,7 +38,7 @@ const MenuNavbar = () => {
   return (
     <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-background">
       <div className="container flex h-16 items-center justify-between ">
-        <div className="h-6">
+        <div className="h-6 md:hidden">
           <MobileMenu>
             <MenuIcon className="h-full md:hidden" />
           </MobileMenu>

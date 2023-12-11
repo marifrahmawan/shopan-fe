@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { store } from "./store/store";
+import { store } from "@/utils/redux/store";
 import { Provider } from "react-redux";
 
-import { router } from "./routes/routes.tsx";
+import { router } from "@/routes/routes.tsx";
 import { RouterProvider } from "react-router-dom";
 
 import { ThemeProvider } from "@/utils/context/theme-provider.tsx";
