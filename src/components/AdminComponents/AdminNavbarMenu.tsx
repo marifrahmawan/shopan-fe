@@ -8,7 +8,7 @@ import AdminMobileMenu from "./AdminMobileMenu";
 
 const AdminNavbarMenu = () => {
   return (
-    <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-background">
+    <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-background border-b dark:border-white">
       <div className="container flex h-16 w-full items-center justify-between">
         <div className="md:hidden">
           <AdminMobileMenu>

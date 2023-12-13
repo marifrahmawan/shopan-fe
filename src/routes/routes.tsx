@@ -8,6 +8,8 @@ import Product from "@/pages/Product/Product";
 import LoginPage from "@/pages/Auth/LoginPage";
 import AdminHomePage from "@/pages/Admin";
 import AdminLayout from "@/components/Layout/AdminLayout";
+import ProductsPage from "@/pages/Admin/ProductsPage";
+import AddProductForm from "@/pages/Admin/module/AddProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,19 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <AdminHomePage />,
+      },
+      {
+        path: "products",
+        children: [
+          {
+            index: true,
+            element: <ProductsPage />,
+          },
+          {
+            path: "create",
+            element: <AddProductForm />,
+          },
+        ],
       },
     ],
   },

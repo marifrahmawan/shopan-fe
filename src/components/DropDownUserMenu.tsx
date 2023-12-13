@@ -64,6 +64,11 @@ const DropDownUserMenu = (props: IProps) => {
           </DropdownMenuPortal>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
+        <Link to={`/admin`}>
+          <DropdownMenuItem className="hover:cursor-pointer">
+            Dashboard
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem>Profile</DropdownMenuItem>
         <DropdownMenuItem>Cart</DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
