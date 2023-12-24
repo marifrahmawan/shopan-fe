@@ -1,6 +1,6 @@
-import bannerImage from "../../assets/img/dan-gold-4HG3Ca3EzWw-unsplash.jpg";
-import { products } from "../../data";
-import CardProduct from "../../components/CardProduct";
+import bannerImage from "@/assets/img/dan-gold-4HG3Ca3EzWw-unsplash.jpg";
+import { products } from "@/data";
+import CardProduct from "@/components/CardProduct";
 import { SlidersHorizontalIcon } from "lucide-react";
 
 const ShopPage = () => {

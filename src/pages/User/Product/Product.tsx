@@ -46,7 +46,7 @@ const Product = () => {
     <div className="container">
       <ScrollRestoration />
       <div className="flex flex-col gap-12 lg:flex-row">
-        <div className="flex-1">
+        <div className="max-w-[600px] flex-1">
           <ProductCarousel>
             <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
               <img src={product?.productImage} className="h-full" />

@@ -1,15 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import RootLayout from "@/components/Layout/RootLayout";
-import Homepage from "@/pages/Home/Homepage";
-import ShopPage from "@/pages/Shop/ShopPage";
 import RegisterPage from "@/pages/Auth/RegisterPage";
-import Product from "@/pages/Product/Product";
 import LoginPage from "@/pages/Auth/LoginPage";
-import AdminHomePage from "@/pages/Admin";
+
+import RootLayout from "@/components/Layout/RootLayout";
+import Homepage from "@/pages/User/Home/Homepage";
+import ShopPage from "@/pages/User/Shop/ShopPage";
+import Product from "@/pages/User/Product/Product";
+
 import AdminLayout from "@/components/Layout/AdminLayout";
-import ProductsPage from "@/pages/Admin/ProductsPage";
-import AddProductForm from "@/pages/Admin/module/AddProductForm";
+import AdminHomePage from "@/pages/Admin";
+import ProductsPage from "@/pages/Admin/Product/AdminProduct";
+import AddProductForm from "@/pages/Admin/Product/module/AddProductForm";
 
 export const router = createBrowserRouter([
   {

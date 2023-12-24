@@ -20,7 +20,7 @@ const AdminNavbarMenu = () => {
             <img src={shopanLogo} alt="Logo" className="h-[50px] w-[50px]" />
           </Link>
         </div>
-        <span className="hidden h-7 w-7 md:block">
+        <span className="hidden h-8 w-8 md:block">
           <DropDownUserMenu>
             <Avatar className="h-full w-full">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
