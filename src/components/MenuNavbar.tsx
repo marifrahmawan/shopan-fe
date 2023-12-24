@@ -83,7 +83,7 @@ const MenuNavbar = () => {
             </FlyoutCart>
           </span>
 
-          <span className="hidden h-7 w-7 md:block">
+          <span className="hidden h-8 w-8 md:block">
             <DropDownUserMenu>
               <Avatar className="h-full w-full">
                 <AvatarImage

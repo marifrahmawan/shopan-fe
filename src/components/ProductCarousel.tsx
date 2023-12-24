@@ -16,6 +16,7 @@ const ProductCarousel = ({ children }: IProps) => {
       emulateTouch={true}
       showIndicators={false}
       dynamicHeight={true}
+      useKeyboardArrows={true}
       renderArrowPrev={(onClickHandler, hasPrev) =>
         hasPrev && (
           <div

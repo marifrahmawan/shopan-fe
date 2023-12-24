@@ -4,28 +4,35 @@ export const productSchema = z.object({
   productName: z.string().min(1, { message: "Enter product name" }),
   productDetail: z.string().min(1, { message: "Enter product details" }),
   productPrice: z
-    .number({
-      invalid_type_error: "Price must be number",
-      required_error: "Enter product price",
-    })
-    .positive({ message: "Enter positive number/price" }),
+    .string()
+    .min(1, { message: "Enter product price" })
+    .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter valid price"),
   productPicture: z
-    .string({
-      required_error: "Upload some product images",
+    .any()
+    .refine((file) => file?.length > 0, "Product picture is required."),
+  productBrand: z.string().min(1, { message: "Enter product brand" }),
+  productAvailable: z
+    .boolean({
+      required_error: "Enter the availability product",
     })
-    .array(),
-  productBrand: z.string({
-    required_error: "Enter product brand",
-  }),
-  productAvailable: z.boolean({
-    required_error: "Enter the availability product",
-  }),
+    .or(z.string()),
   productStock: z
-    .number({
-      invalid_type_error: "Stock must be number",
-      required_error: "Enter Product Price",
-    })
-    .positive("Enter positive number"),
+    .string()
+    .min(1, { message: "Enter product stock" })
+    .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter valid stock"),
+  productSize: z.array(
+    z
+      .string()
+      .min(1, { message: "Enter product size" })
+      .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter a number")
+      .optional(),
+  ),
+  productColor: z.array(
+    z.string().min(1, { message: "Enter product color" }).optional(),
+  ),
+  productDimension: z.array(
+    z.string().min(1, { message: "Enter product dimension" }).optional(),
+  ),
 });
 
 export type ProductType = z.infer<typeof productSchema>;

@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const ProductsPage = () => {
   return (
-    <div className="container">
-      <p className="w-full text-center text-[34px] font-semibold">
+    <div className="w-full">
+      <p className="w-full mb-5 text-[34px] font-semibold">
         My Products
       </p>
 

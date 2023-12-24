@@ -1,4 +1,4 @@
-import { products, articles } from "../../data";
+import { products, articles } from "../../../data";
 
 import AdsSlider from "@/components/AdsSlider";
 import CardProduct from "@/components/CardProduct";
