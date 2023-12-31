@@ -41,7 +41,7 @@ const ShopPage = () => {
                 return (
                   <CardProduct
                     key={id}
-                    id={id}
+                    id={id.toString()}
                     productImage={productImage}
                     productName={productName}
                     ratings={ratings}
