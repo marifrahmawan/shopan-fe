@@ -1,65 +1,58 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 
 import { ScrollRestoration, useParams } from "react-router-dom";
 
-import ProductCarousel from "@/components/ProductCarousel";
-import { Button } from "@/components/ui/button";
-
-import { products } from "@/data";
-import {
-  Circle,
-  Dot,
-  Heart,
-  Minus,
-  Plus,
-  ShoppingCart,
-  Star,
-} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ProductReviews from "@/components/ProductReviews";
 import ProductQuestions from "@/components/ProductQuestions";
+import ProductCarousel from "@/components/ProductCarousel";
+import ProductReviews from "@/components/ProductReviews";
+import { toast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 
-interface IProducts {
-  id: number;
-  productImage: string;
-  productName: string;
-  price: number;
-  ratings: number;
-}
+import { Dot, Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import { IProduct, getProductById } from "@/utils/api/products";
+import { cn } from "@/utils/utils";
+import { useAppSelector } from "@/utils/redux/hooks";
 
 const Product = () => {
   const { product_id } = useParams();
-  const res = products.filter(({ id }) => {
-    return id === parseInt(product_id!);
-  })[0];
-
-  const [product, setProduct] = useState<IProducts>();
-
+  const user = useAppSelector((state) => state.user.data);
+  const [showAllDescription, setShowAllDescription] = useState(false);
   const [numberOfOrders, setNumberOfOrders] = useState(1);
+  const [product, setProduct] = useState<IProduct | undefined>();
+
+  const fetchProduct = async () => {
+    try {
+      const res = await getProductById(product_id!);
+
+      setProduct(res?.data);
+    } catch (error: any) {
+      toast({
+        description: <p>{error.message}</p>,
+      });
+    }
+  };
 
   useEffect(() => {
-    setProduct(res);
-  }, [res]);
+    fetchProduct();
+  }, []);
 
   return (
     <div className="container">
       <ScrollRestoration />
       <div className="flex flex-col gap-12 lg:flex-row">
-        <div className="max-w-[600px] flex-1">
+        <div className="max-w-full flex-1 lg:max-w-[600px]">
           <ProductCarousel>
-            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
-              <img src={product?.productImage} className="h-full" />
-            </div>
-            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
-              <img src={product?.productImage} className="h-full" />
-            </div>
-            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
-              <img src={product?.productImage} className="h-full" />
-            </div>
-            <div className="aspect-auto h-[300px] cursor-grab object-cover md:h-[700px]">
-              <img src={product?.productImage} className="h-full" />
-            </div>
+            {product?.productPicture.map((productPic) => (
+              <div
+                className="aspect-[1/1] h-[300px] cursor-grab object-cover md:h-[600px]"
+                key={productPic}
+              >
+                <img src={productPic} className="h-full" />
+              </div>
+            ))}
           </ProductCarousel>
         </div>
 
@@ -78,20 +71,37 @@ const Product = () => {
               <Dot />
               <p className="font-medium">0 Sold</p>
               <Dot />
-              <p className="font-medium text-secondary-green">10 in Stocks</p>
+              <p className="font-medium text-secondary-green">
+                {product?.productStock} in Stocks
+              </p>
             </div>
-            <p className="mt-3 text-[14px] text-neutral-500 dark:text-neutral-400">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-              repellat voluptas optio totam! Nam repudiandae harum voluptatibus
-              esse numquam quam, qui optio mollitia quos! Quos esse fugit
-              quisquam amet. Voluptatum. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Magnam molestias saepe odio. Atque, officiis
-              amet sint quisquam iure ad nihil unde velit saepe fugit vero
-              molestias exercitationem sed, cupiditate minima!lore
-            </p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: product?.productDetail as TrustedHTML,
+              }}
+              className={cn(
+                "mt-3 overflow-hidden text-ellipsis text-[14px] text-neutral-500 dark:text-neutral-400",
+                showAllDescription
+                  ? " line-clamp-[0] h-full"
+                  : "line-clamp-[7] h-[150px]",
+              )}
+            />
+            <Button
+              className="h-fit bg-transparent p-0 font-semibold text-secondary-green hover:bg-transparent"
+              onClick={() => setShowAllDescription((prevState) => !prevState)}
+            >
+              {showAllDescription
+                ? "Lihat Lebih Sedikit"
+                : "Lihat Selengkapnya"}
+            </Button>
             <span className="mt-6 flex items-center gap-3">
               <h6 className="font-medium text-secondary-green">
-                ${product?.price}
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                }).format(product?.productPrice as number)}
               </h6>
               <p className="text-[20px] text-neutral-400 line-through">$650</p>
             </span>
@@ -127,58 +137,83 @@ const Product = () => {
             </div>
           </div>
 
-          <div className="mt-5">
-            <p>Choose colors</p>
-            <section className="mt-1 flex gap-2">
-              <Circle className="h-[30px] w-[30px] fill-black stroke-black hover:cursor-pointer dark:stroke-white" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-green stroke-secondary-green hover:cursor-pointer dark:stroke-white" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-blue stroke-secondary-blue hover:cursor-pointer dark:stroke-white" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-orange stroke-secondary-orange hover:cursor-pointer dark:stroke-white" />
-              <Circle className="h-[30px] w-[30px] fill-secondary-red stroke-secondary-red hover:cursor-pointer dark:stroke-white" />
-            </section>
-          </div>
+          {user?.role !== "admin" && (
+            <section>
+              {product?.productColor[0] !== undefined && (
+                <div className="mt-5">
+                  <p className="font-medium">Choose colors</p>
+                  <section className="mt-1 flex gap-2">
+                    {product.productColor.map((color) => (
+                      <Button variant="outline" size="sm" key={color}>
+                        {color}
+                      </Button>
+                    ))}
+                  </section>
+                </div>
+              )}
 
-          <div className="mt-5">
-            <p>Choose size</p>
-            <section className="mt-1 flex gap-2">
-              <Button size="icon">S</Button>
-              <Button size="icon">M</Button>
-              <Button size="icon">L</Button>
-              <Button size="icon">XL</Button>
-            </section>
-          </div>
+              {product?.productSize[0] !== undefined && (
+                <div className="mt-5">
+                  <p className="font-medium">Choose size</p>
+                  <section className="mt-1 flex gap-2">
+                    {product.productSize.map((color) => (
+                      <Button variant="outline" size="icon" key={color}>
+                        {color}
+                      </Button>
+                    ))}
+                  </section>
+                </div>
+              )}
 
-          <div className="mt-10 border-b pb-8">
-            <div className="flex gap-4 lg:gap-7">
-              <div className="flex w-fit gap-3 rounded-md bg-neutral-100">
-                <Button
-                  size="icon"
-                  className="rounded-r-none bg-transparent"
-                  onClick={() => setNumberOfOrders(numberOfOrders - 1)}
-                  disabled={numberOfOrders === 1}
-                >
-                  <Minus className="h-4 w-4 fill-black stroke-black" />
-                </Button>
-                <p className="flex min-w-[42px] items-center justify-center bg-transparent px-2 text-[16px] font-medium text-black">
-                  {numberOfOrders}
-                </p>
-                <Button
-                  size="icon"
-                  className="rounded-l-none bg-transparent"
-                  onClick={() => setNumberOfOrders(numberOfOrders + 1)}
-                >
-                  <Plus className="h-4 w-4 fill-black stroke-black" />
+              {product?.productDimension[0] !== undefined && (
+                <div className="mt-5">
+                  <p className="font-medium">Choose dimensions</p>
+                  <section className="mt-1 flex gap-2">
+                    {product!.productDimension.map((dimension) => (
+                      <Button variant="outline" size="icon" key={dimension}>
+                        {dimension}
+                      </Button>
+                    ))}
+                  </section>
+                </div>
+              )}
+            </section>
+          )}
+
+          {user?.role !== "admin" && (
+            <div className="mt-10 border-b pb-8">
+              <div className="flex gap-4 lg:gap-7">
+                <div className="flex w-fit gap-3 rounded-md bg-neutral-100">
+                  <Button
+                    size="icon"
+                    className="rounded-r-none bg-transparent"
+                    onClick={() => setNumberOfOrders(numberOfOrders - 1)}
+                    disabled={numberOfOrders === 1}
+                  >
+                    <Minus className="h-4 w-4 fill-black stroke-black" />
+                  </Button>
+                  <p className="flex min-w-[42px] items-center justify-center bg-transparent px-2 text-[16px] font-medium text-black">
+                    {numberOfOrders}
+                  </p>
+                  <Button
+                    size="icon"
+                    className="rounded-l-none bg-transparent"
+                    onClick={() => setNumberOfOrders(numberOfOrders + 1)}
+                  >
+                    <Plus className="h-4 w-4 fill-black stroke-black" />
+                  </Button>
+                </div>
+                <Button className="w-full lg:max-w-[250px]">
+                  <Heart className="fill-pink-600 stroke-pink-600" />{" "}
+                  <p className="pl-4">Add to Wishlist</p>
                 </Button>
               </div>
-              <Button className="w-full lg:max-w-[250px]">
-                <Heart className="fill-pink-600 stroke-pink-600" />{" "}
-                <p className="pl-4">Add to Wishlist</p>
+              <Button className="mt-4 w-full lg:max-w-[425px]">
+                <ShoppingCart /> <p className="pl-4">Add to Cart</p>
               </Button>
             </div>
-            <Button className="mt-4 w-full lg:max-w-[425px]">
-              <ShoppingCart /> <p className="pl-4">Add to Cart</p>
-            </Button>
-          </div>
+          )}
+
           <div className="mt-5 flex gap-7 pb-5 text-[12px]">
             <p className="font-medium">Category</p>
             <p className="text-neutral-400">Living Room, Bedroom</p>

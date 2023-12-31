@@ -27,6 +27,7 @@ import TipTap from "@/components/AdminComponents/TipTap";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+// import { Textarea } from "@/components/ui/textarea";
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -99,7 +100,8 @@ const AddProductForm = () => {
 
       setTimeout(() => {
         navigate("/admin/products");
-      }, 600);
+      }, 400);
+      form.reset();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -137,6 +139,11 @@ const AddProductForm = () => {
               <FormItem className="mt-5">
                 <FormLabel>Detail Product</FormLabel>
                 <FormControl>
+                  {/* <Textarea
+                    placeholder="Product Details"
+                    {...field}
+                    className="h-[200px]"
+                  /> */}
                   <TipTap fieldName={""} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />

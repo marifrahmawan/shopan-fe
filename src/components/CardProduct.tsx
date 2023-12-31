@@ -1,28 +1,29 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { Star } from "lucide-react";
+import { cn } from "@/utils/utils";
+import { useAppSelector } from "@/utils/redux/hooks";
 
 interface IProducts {
-  id: number;
+  id: string;
   productImage: string;
   productName: string;
   price: number;
   ratings: number;
 }
 
-const CardProduct = ({
-  id,
-  productImage,
-  productName,
-  price,
-  ratings,
-}: IProducts) => {
-  const addToCart = (id: number) => {
+const CardProduct = (props: IProducts) => {
+  const user = useAppSelector((state) => state.user.data);
+
+  const { id, productImage, productName, price, ratings } = props;
+
+  const addToCart = (id: string) => {
     console.log(id);
     return id;
   };
 
   return (
-    <div className="col-auto h-fit">
+    <div className="col-auto h-full">
       <div className="relative mb-3 h-[200px] w-full md:h-[349px]">
         <img
           src={productImage}
@@ -34,7 +35,7 @@ const CardProduct = ({
             <p className="mb-1 rounded-md bg-slate-300 px-3 py-1 text-center text-xs font-bold text-black">
               New
             </p>
-            <p className="bg-secondary-green rounded-md px-3 py-1 text-center text-xs font-bold">
+            <p className="rounded-md bg-secondary-green px-3 py-1 text-center text-xs font-bold">
               -50%
             </p>
           </span>
@@ -59,40 +60,36 @@ const CardProduct = ({
       </div>
       <div className="mb-1 flex items-center gap-1">
         <p className="text-base font-semibold">{ratings}</p>
-        <svg
-          viewBox="0 0 1024 1024"
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-[25px] w-[25px] fill-yellow-400"
-        >
-          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              className="fill-yellow-500"
-              d="M283.84 867.84 512 747.776l228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72z"
-            ></path>
-          </g>
-        </svg>
+        <div className="h-full">
+          <Star className={cn("h-4 w-4 fill-yellow-500 stroke-yellow-500")} />
+        </div>
       </div>
       <Link to={`/product/${id}`}>
-        <p className="mb-1 font-semibold hover:underline">{productName}</p>
+        <p className="mb-1 line-clamp-2 h-[48px] text-ellipsis font-semibold hover:underline">
+          {productName}
+        </p>
       </Link>
       <div className="flex gap-3 text-sm">
-        <p className="text-secondary-green font-semibold">${price}</p>
+        <p className="font-semibold text-secondary-green">
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0,
+          }).format(price)}
+        </p>
         <p className="text-neutral-400 line-through">$400.00</p>
       </div>
-      <Button
-        className="mt-5 w-full rounded-lg py-2"
-        onClick={() => {
-          addToCart(id);
-        }}
-      >
-        Add to cart
-      </Button>
+      {user?.role !== "admin" && (
+        <Button
+          className="mt-5 w-full rounded-lg py-2"
+          onClick={() => {
+            addToCart(id);
+          }}
+        >
+          Add to cart
+        </Button>
+      )}
     </div>
   );
 };

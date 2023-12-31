@@ -32,7 +32,7 @@ const MenuNavbar = () => {
 
   const searchHandler = (values: SearchType) => {
     console.log(values);
-    reset()
+    reset();
   };
 
   return (
@@ -44,7 +44,7 @@ const MenuNavbar = () => {
           </MobileMenu>
         </div>
         <div className="hidden flex-1 items-center md:flex">
-          <NavLink to="/" className="dark:bg-white rounded-full">
+          <NavLink to="/" className="rounded-full dark:bg-white">
             <img
               src={shopanLogo}
               alt="shopan logo"
@@ -53,12 +53,15 @@ const MenuNavbar = () => {
           </NavLink>
         </div>
 
-        <form onSubmit={handleSubmit(searchHandler)} className="hidden md:block">
-          <div className="flex h-[40px] w-[500px] lg:w-[700px] overflow-hidden rounded-full border items-center pr-3 dark:border-bg-white">
+        <form
+          onSubmit={handleSubmit(searchHandler)}
+          className="hidden md:block"
+        >
+          <div className="dark:border-bg-white flex h-[40px] w-[500px] items-center overflow-hidden rounded-full border pr-3 lg:w-[700px]">
             <input
               type="text"
               id="search"
-              className="w-full pl-5 focus:outline-none h-full dark:bg-background"
+              className="h-full w-full pl-5 focus:outline-none dark:bg-background"
               disabled={isSubmitting}
               placeholder="Search products..."
               autoComplete="off"
@@ -73,7 +76,7 @@ const MenuNavbar = () => {
           )}
         </form>
 
-        <div className="flex flex-1 items-center justify-end">
+        <div className="flex flex-1 items-center justify-end gap-3 md:gap-0">
           <span className="relative h-7 w-7 md:mr-5">
             <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] font-bold text-white dark:bg-white dark:text-black">
               2
@@ -83,7 +86,7 @@ const MenuNavbar = () => {
             </FlyoutCart>
           </span>
 
-          <span className="hidden h-8 w-8 md:block">
+          <span className="h-8 w-8">
             <DropDownUserMenu>
               <Avatar className="h-full w-full">
                 <AvatarImage

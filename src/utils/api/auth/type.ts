@@ -57,4 +57,5 @@ export interface ILoginResponse {
   userName: string;
   email: string;
   accessToken: string;
+  role: string;
 }

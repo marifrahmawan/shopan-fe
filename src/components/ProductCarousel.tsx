@@ -1,11 +1,10 @@
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import { ReactChild } from "react";
 
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 type IProps = {
-  children: ReactChild[];
+  children: JSX.Element[] | undefined;
 };
 
 const ProductCarousel = ({ children }: IProps) => {

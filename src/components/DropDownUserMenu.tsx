@@ -17,6 +17,8 @@ import { Sun, Moon, Computer } from "lucide-react";
 
 import { useTheme } from "@/utils/context/theme-provider";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { LOGOUT_USER } from "@/utils/redux/userLoginSlice";
 
 type IProps = {
   children: ReactNode;
@@ -25,13 +27,19 @@ type IProps = {
 const DropDownUserMenu = (props: IProps) => {
   const { children } = props;
   const { setTheme } = useTheme();
+  const user = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
       <DropdownMenuContent className="w-[180px]">
-        <DropdownMenuLabel>Halo, Arif</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        {user?.userName && (
+          <>
+            <DropdownMenuLabel>{user?.userName}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </>
+        )}
 
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
@@ -63,23 +71,46 @@ const DropDownUserMenu = (props: IProps) => {
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <Link to={`/admin/`}>
-          <DropdownMenuItem className="hover:cursor-pointer">
-            Dashboard
+        {user?.role === "admin" && (
+          <>
+            <DropdownMenuSeparator />
+            <Link to={`/admin/`}>
+              <DropdownMenuItem className="hover:cursor-pointer">
+                Dashboard
+              </DropdownMenuItem>
+            </Link>
+          </>
+        )}
+        {user?.role === "user" && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Cart</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+          </>
+        )}
+        {!user?.accessToken ? (
+          <>
+            <DropdownMenuSeparator />
+            <Link to={`/register`}>
+              <DropdownMenuItem className="hover:cursor-pointer">
+                Register
+              </DropdownMenuItem>
+            </Link>
+            <Link to={"/login"}>
+              <DropdownMenuItem className="hover:cursor-pointer">
+                Login
+              </DropdownMenuItem>
+            </Link>
+          </>
+        ) : (
+          <DropdownMenuItem
+            onClick={() => dispatch(LOGOUT_USER())}
+            className="hover:cursor-pointer"
+          >
+            Logout
           </DropdownMenuItem>
-        </Link>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Cart</DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <Link to={`/register`}>
-          <DropdownMenuItem className="hover:cursor-pointer">
-            Register
-          </DropdownMenuItem>
-        </Link>
-        <DropdownMenuItem>Login</DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

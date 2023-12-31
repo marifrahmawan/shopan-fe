@@ -1,4 +1,6 @@
-import { products, articles } from "../../../data";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
+import { articles } from "../../../data";
 
 import AdsSlider from "@/components/AdsSlider";
 import CardProduct from "@/components/CardProduct";
@@ -13,8 +15,27 @@ import bgNewsletter from "@/assets/img/alex-plesovskich-iRMlWAOzwtM-unsplash.jpg
 import Footer from "@/components/Footer";
 import { Banknote, Lock, Mail, Phone, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { IProduct, getProducts } from "@/utils/api/products";
+import { toast } from "@/components/ui/use-toast";
 
 const Homepage = () => {
+  const [newArrivalProducts, setNewArrivalProducts] = useState<IProduct[] | undefined>([]) // prettier-ignore
+
+  const fetchNewArrivalProducts = async () => {
+    try {
+      const res = await getProducts({ limit: "4" });
+
+      setNewArrivalProducts(res?.data);
+    } catch (error: any) {
+      toast({
+        description: <p>{error.data.message}</p>,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchNewArrivalProducts();
+  }, []);
   return (
     <div className="container">
       <AdsSlider />
@@ -104,16 +125,16 @@ const Homepage = () => {
         </div>
       </div>
 
-      <div className="mb-14 grid grid-cols-2 gap-6 md:mb-28 lg:grid-cols-4">
-        {products.map(({ id, productImage, productName, price, ratings }) => {
+      <div className="mb-14 grid grid-cols-2 place-items-stretch gap-6 md:mb-28 lg:grid-cols-4">
+        {newArrivalProducts?.map((product) => {
           return (
             <CardProduct
-              key={id}
-              id={id}
-              productName={productName}
-              productImage={productImage}
-              price={price}
-              ratings={ratings}
+              key={product._id}
+              id={product._id}
+              productName={product.productName}
+              productImage={product.productPicture[0]}
+              price={product.productPrice}
+              ratings={5}
             />
           );
         })}
@@ -176,7 +197,7 @@ const Homepage = () => {
         </div>
         <div className="flex h-full w-full items-center p-5 md:w-1/2 md:pl-[72px]">
           <div className="w-[452px]">
-            <p className="text-secondary-blue mb-4 text-left font-bold">
+            <p className="mb-4 text-left font-bold text-secondary-blue">
               SALE UP TO 35% OFF
             </p>
             <span className="leading-10">
@@ -225,7 +246,7 @@ const Homepage = () => {
           className="hidden h-full w-full object-cover object-center md:block"
         />
         <div className="absolute top-0 flex h-full w-full items-center justify-center">
-          <div className="bg-white/40 dark:bg-black/40 flex flex-col items-center justify-center rounded-md bg-opacity-20 p-5 pb-6 backdrop-blur-sm md:p-7">
+          <div className="flex flex-col items-center justify-center rounded-md bg-white/40 bg-opacity-20 p-5 pb-6 backdrop-blur-sm dark:bg-black/40 md:p-7">
             <h4 className="mb-2 text-2xl md:text-[40px]">
               Join Our Newsletter
             </h4>
@@ -238,7 +259,7 @@ const Homepage = () => {
               </div>
               <input
                 type="text"
-                className="w-full bg-transparent px-3 py-2 text-[14px] focus:outline-none text-black placeholder:text-gray-300"
+                className="w-full bg-transparent px-3 py-2 text-[14px] text-black placeholder:text-gray-300 focus:outline-none"
                 placeholder="Email address"
               />
             </div>

@@ -12,6 +12,8 @@ import AdminLayout from "@/components/Layout/AdminLayout";
 import AdminHomePage from "@/pages/Admin";
 import ProductsPage from "@/pages/Admin/Product/AdminProduct";
 import AddProductForm from "@/pages/Admin/Product/module/AddProductForm";
+import AdminProtectedRoutes from "./AdminProtectedRoutes";
+import AuthProtectedRoutes from "./AuthProtectedRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -33,34 +35,44 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "admin",
-    element: <AdminLayout />,
+    element: <AdminProtectedRoutes />,
     children: [
       {
-        index: true,
-        element: <AdminHomePage />,
-      },
-      {
-        path: "products",
+        path: "admin",
+        element: <AdminLayout />,
         children: [
           {
             index: true,
-            element: <ProductsPage />,
+            element: <AdminHomePage />,
           },
           {
-            path: "create",
-            element: <AddProductForm />,
+            path: "products",
+            children: [
+              {
+                index: true,
+                element: <ProductsPage />,
+              },
+              {
+                path: "create",
+                element: <AddProductForm />,
+              },
+            ],
           },
         ],
       },
     ],
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
+    element: <AuthProtectedRoutes />,
+    children: [
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+    ],
   },
 ]);

@@ -1,7 +1,44 @@
 import { AxiosError } from "axios";
-import { ProductType } from ".";
+import { IProduct, ProductType } from ".";
 import axiosWithConfig from "../axiosWithConfig";
 import { IResponse } from "../types";
+import { IParamsRequest } from "@/utils/types/api";
+
+export const getProducts = async (params?: IParamsRequest) => {
+  try {
+    let query = "";
+
+    if (params) {
+      const queryParams: string[] = [];
+      let key: keyof typeof params;
+      for (key in params) {
+        queryParams.push(`${key}=${params[key]}`);
+      }
+
+      query = queryParams.join("&");
+    }
+    const url = query ? `/product?${query}` : "/product";
+    const res = await axiosWithConfig.get(url);
+
+    return res.data as IResponse<IProduct[] | undefined>;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response;
+    }
+  }
+};
+
+export const getProductById = async (productId: string) => {
+  try {
+    const res = await axiosWithConfig.get(`/product/${productId}`);
+
+    return res.data as IResponse<IProduct>;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response;
+    }
+  }
+};
 
 export const createProduct = async (body: ProductType) => {
   try {
@@ -27,7 +64,7 @@ export const createProduct = async (body: ProductType) => {
     return res.data as IResponse<ProductType>;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data;
+      throw error.response;
     }
   }
 };

@@ -10,15 +10,18 @@ import shopanLogo from "@/assets/img/shopan-logo.png";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ILogin, loginSchema, loginUser } from "@/utils/api/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/utils/redux/hooks";
+import { LOGIN_USER_INFO } from "@/utils/redux/userLoginSlice";
+import { ILogin, loginSchema, loginUser } from "@/utils/api/auth";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -42,6 +45,7 @@ const LoginPage = () => {
         description: "Logged in",
       });
 
+      dispatch(LOGIN_USER_INFO({ data: res!.data }));
       navigate("/");
     } catch (error: any) {
       toast({

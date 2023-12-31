@@ -1,5 +1,20 @@
 import * as z from "zod";
 
+export interface IProduct {
+  _id: string;
+  productName: string;
+  productDetail: string;
+  productPrice: number;
+  productPicture: string[];
+  productBrand: string;
+  productAvailable: boolean;
+  productStock: number;
+  productSize: string[];
+  productColor: string[];
+  productDimension: string[];
+  productSold: number;
+}
+
 export const productSchema = z.object({
   productName: z.string().min(1, { message: "Enter product name" }),
   productDetail: z.string().min(1, { message: "Enter product details" }),
