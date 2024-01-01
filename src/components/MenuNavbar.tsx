@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as z from "zod";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -10,6 +11,11 @@ import FlyoutCart from "./FlyoutCart";
 import MobileMenu from "./MobileMenu";
 import DropDownUserMenu from "./DropDownUserMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect } from "react";
+import { getUserCart } from "@/utils/api/cart";
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { USER_CART_DATA } from "@/utils/redux/userCartSlice";
+import { toast } from "./ui/use-toast";
 
 const searchSchema = z.object({
   search: z.string().min(1, { message: "Enter product name" }),
@@ -18,6 +24,9 @@ const searchSchema = z.object({
 type SearchType = z.infer<typeof searchSchema>;
 
 const MenuNavbar = () => {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
+
   const {
     handleSubmit,
     register,
@@ -34,6 +43,28 @@ const MenuNavbar = () => {
     console.log(values);
     reset();
   };
+
+  const fetchCartData = async () => {
+    try {
+      const res = await getUserCart();
+
+      if (res?.data !== null) {
+        const cartRedux = res!.data.products!.map((product) => {
+          return { productId: product.productId._id };
+        });
+        dispatch(USER_CART_DATA(cartRedux));
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: <p>{error.message}</p>,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchCartData();
+  }, []);
 
   return (
     <div className="sticky top-0 z-10 flex w-full bg-white/90 dark:bg-background">
@@ -79,7 +110,7 @@ const MenuNavbar = () => {
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-0">
           <span className="relative h-7 w-7 md:mr-5">
             <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] font-bold text-white dark:bg-white dark:text-black">
-              2
+              {cart.length}
             </span>
             <FlyoutCart>
               <ShoppingBag className="h-7 w-7 hover:cursor-pointer" />

@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Star } from "lucide-react";
 import { cn } from "@/utils/utils";
-import { useAppSelector } from "@/utils/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { addToCart } from "@/utils/api/cart";
+import { toast } from "./ui/use-toast";
+import { ADD_PRODUCT_TO_CART } from "@/utils/redux/userCartSlice";
 
 interface IProducts {
   id: string;
@@ -13,13 +17,27 @@ interface IProducts {
 }
 
 const CardProduct = (props: IProducts) => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.data);
 
   const { id, productImage, productName, price, ratings } = props;
 
-  const addToCart = (id: string) => {
-    console.log(id);
-    return id;
+  const addToCartHandler = async (productId: string) => {
+    try {
+      const res = await addToCart(productId, 1);
+
+      dispatch(ADD_PRODUCT_TO_CART({ productId: productId }));
+
+      toast({
+        description: <p>{res?.message}</p>,
+      });
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        variant: "destructive",
+        description: <p>{error.message}</p>,
+      });
+    }
   };
 
   return (
@@ -84,7 +102,7 @@ const CardProduct = (props: IProducts) => {
         <Button
           className="mt-5 w-full rounded-lg py-2"
           onClick={() => {
-            addToCart(id);
+            addToCartHandler(id);
           }}
         >
           Add to cart

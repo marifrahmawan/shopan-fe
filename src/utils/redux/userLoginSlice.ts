@@ -30,6 +30,7 @@ export const userLoginSlice = createSlice({
     },
     LOGOUT_USER: (state) => {
       state.data = initialState.data;
+      window.location.reload();
     },
   },
 });
