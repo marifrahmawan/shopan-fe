@@ -4,24 +4,32 @@ import { useEffect, useState } from "react";
 import { ScrollRestoration, useParams } from "react-router-dom";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dot, Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import ProductQuestions from "@/components/ProductQuestions";
 import ProductCarousel from "@/components/ProductCarousel";
 import ProductReviews from "@/components/ProductReviews";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
-
-import { Dot, Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
-import { IProduct, getProductById } from "@/utils/api/products";
 import { cn } from "@/utils/utils";
-import { useAppSelector } from "@/utils/redux/hooks";
+
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { IProduct, getProductById } from "@/utils/api/products";
+import { addToCart } from "@/utils/api/cart";
+import { ADD_PRODUCT_TO_CART } from "@/utils/redux/userCartSlice";
 
 const Product = () => {
   const { product_id } = useParams();
   const user = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
+
   const [showAllDescription, setShowAllDescription] = useState(false);
-  const [numberOfOrders, setNumberOfOrders] = useState(1);
   const [product, setProduct] = useState<IProduct | undefined>();
+
+  const [numberOfOrders, setNumberOfOrders] = useState(1);
+  const [dimension, setDimension] = useState<string | undefined>(undefined);
+  const [color, setColor] = useState<string | undefined>(undefined);
+  const [size, setSize] = useState<string | undefined>(undefined);
 
   const fetchProduct = async () => {
     try {
@@ -30,6 +38,41 @@ const Product = () => {
       setProduct(res?.data);
     } catch (error: any) {
       toast({
+        description: <p>{error.message}</p>,
+      });
+    }
+  };
+
+  const addToCartHandler = async (productId: string) => {
+    try {
+      const res = await addToCart(
+        productId,
+        numberOfOrders,
+        color,
+        dimension,
+        size,
+      );
+
+      dispatch(
+        ADD_PRODUCT_TO_CART({
+          productId: productId,
+          productName: product!.productName,
+          productPicture: product!.productPicture[0],
+          quantity: numberOfOrders,
+          size: size,
+          color: color,
+          dimension: dimension,
+          price: product!.productPrice,
+        }),
+      );
+
+      toast({
+        description: <p>{res?.message}</p>,
+      });
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        variant: "destructive",
         description: <p>{error.message}</p>,
       });
     }
@@ -144,7 +187,12 @@ const Product = () => {
                   <p className="font-medium">Choose colors</p>
                   <section className="mt-1 flex gap-2">
                     {product.productColor.map((color) => (
-                      <Button variant="outline" size="sm" key={color}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        key={color}
+                        onClick={() => setColor(color)}
+                      >
                         {color}
                       </Button>
                     ))}
@@ -156,9 +204,14 @@ const Product = () => {
                 <div className="mt-5">
                   <p className="font-medium">Choose size</p>
                   <section className="mt-1 flex gap-2">
-                    {product.productSize.map((color) => (
-                      <Button variant="outline" size="icon" key={color}>
-                        {color}
+                    {product.productSize.map((size) => (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        key={size}
+                        onClick={() => setSize(size)}
+                      >
+                        {size}
                       </Button>
                     ))}
                   </section>
@@ -170,7 +223,12 @@ const Product = () => {
                   <p className="font-medium">Choose dimensions</p>
                   <section className="mt-1 flex gap-2">
                     {product!.productDimension.map((dimension) => (
-                      <Button variant="outline" size="icon" key={dimension}>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        key={dimension}
+                        onClick={() => setDimension(dimension)}
+                      >
                         {dimension}
                       </Button>
                     ))}
@@ -208,7 +266,10 @@ const Product = () => {
                   <p className="pl-4">Add to Wishlist</p>
                 </Button>
               </div>
-              <Button className="mt-4 w-full lg:max-w-[425px]">
+              <Button
+                className="mt-4 w-full lg:max-w-[425px]"
+                onClick={() => addToCartHandler(product?._id as string)}
+              >
                 <ShoppingCart /> <p className="pl-4">Add to Cart</p>
               </Button>
             </div>

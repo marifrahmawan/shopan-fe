@@ -17,6 +17,9 @@ export interface ICart {
       productDimension?: string[];
       productSold: number;
     };
+    color?: string;
+    dimension?: string;
+    size?: string;
     quantity: number;
     price: number;
     totalPrice: number;

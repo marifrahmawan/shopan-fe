@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link } from "react-router-dom";
-import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 import { Star } from "lucide-react";
 import { cn } from "@/utils/utils";
-import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
-import { addToCart } from "@/utils/api/cart";
-import { toast } from "./ui/use-toast";
-import { ADD_PRODUCT_TO_CART } from "@/utils/redux/userCartSlice";
+import { Separator } from "./ui/separator";
 
 interface IProducts {
   id: string;
@@ -17,32 +13,16 @@ interface IProducts {
 }
 
 const CardProduct = (props: IProducts) => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const navigate = useNavigate();
 
   const { id, productImage, productName, price, ratings } = props;
 
-  const addToCartHandler = async (productId: string) => {
-    try {
-      const res = await addToCart(productId, 1);
-
-      dispatch(ADD_PRODUCT_TO_CART({ productId: productId }));
-
-      toast({
-        description: <p>{res?.message}</p>,
-      });
-    } catch (error: any) {
-      console.log(error);
-      toast({
-        variant: "destructive",
-        description: <p>{error.message}</p>,
-      });
-    }
-  };
-
   return (
-    <div className="col-auto h-full">
-      <div className="relative mb-3 h-[200px] w-full md:h-[349px]">
+    <div
+      className="col-auto h-full rounded-lg p-4 shadow-lg hover:cursor-pointer dark:border"
+      onClick={() => navigate(`/product/${id}`)}
+    >
+      <div className="relative mb-3 h-[200px] w-full overflow-hidden rounded-md md:h-[349px]">
         <img
           src={productImage}
           alt="table lamp"
@@ -76,17 +56,11 @@ const CardProduct = (props: IProducts) => {
           </span>
         </div>
       </div>
-      <div className="mb-1 flex items-center gap-1">
-        <p className="text-base font-semibold">{ratings}</p>
-        <div className="h-full">
-          <Star className={cn("h-4 w-4 fill-yellow-500 stroke-yellow-500")} />
-        </div>
-      </div>
-      <Link to={`/product/${id}`}>
-        <p className="mb-1 line-clamp-2 h-[48px] text-ellipsis font-semibold hover:underline">
-          {productName}
-        </p>
-      </Link>
+
+      <p className="mb-1 line-clamp-2 h-[48px] text-ellipsis font-semibold">
+        {productName}
+      </p>
+
       <div className="flex gap-3 text-sm">
         <p className="font-semibold text-secondary-green">
           {new Intl.NumberFormat("id-ID", {
@@ -98,16 +72,21 @@ const CardProduct = (props: IProducts) => {
         </p>
         <p className="text-neutral-400 line-through">$400.00</p>
       </div>
-      {user?.role !== "admin" && (
-        <Button
-          className="mt-5 w-full rounded-lg py-2"
-          onClick={() => {
-            addToCartHandler(id);
-          }}
-        >
-          Add to cart
-        </Button>
-      )}
+      <div className="mb-1 mt-2 flex items-center gap-1">
+        <p className="text-[14px] font-semibold">{ratings}</p>
+        <div className="h-full">
+          <Star
+            className={cn(
+              "h-[14px] w-[14px] fill-yellow-500 stroke-yellow-500",
+            )}
+          />
+        </div>
+        <Separator
+          orientation="vertical"
+          className="mx-1 h-4 w-[2px] bg-foreground"
+        />
+        <p className="text-[14px] text-neutral-500">18 Sold</p>
+      </div>
     </div>
   );
 };

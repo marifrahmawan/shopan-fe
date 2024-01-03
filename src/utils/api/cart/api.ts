@@ -16,9 +16,21 @@ export const getUserCart = async () => {
   }
 };
 
-export const addToCart = async (productId: string, quantity: number) => {
+export const addToCart = async (
+  productId: string | undefined,
+  quantity: number,
+  color?: string,
+  dimension?: string,
+  size?: string,
+) => {
   try {
-    const res = await axiosWithConfig.post("/cart", { productId, quantity });
+    const res = await axiosWithConfig.post("/cart", {
+      productId,
+      quantity,
+      color,
+      dimension,
+      size,
+    });
 
     return res.data as IResponse;
   } catch (error) {
@@ -32,9 +44,45 @@ export const addToCart = async (productId: string, quantity: number) => {
   }
 };
 
-export const reduceCart = async (productId: string) => {
+export const reduceCart = async (
+  productId: string,
+  size?: string,
+  color?: string,
+  dimension?: string,
+) => {
   try {
-    const res = await axiosWithConfig.post("/cart/reduce", { productId });
+    const res = await axiosWithConfig.post("/cart/reduce", {
+      productId,
+      size,
+      color,
+      dimension,
+    });
+
+    return res.data as IResponse;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new CustomHttpError({
+        name: "HTTP_ERROR",
+        message: error.response?.data.message,
+        statusCode: error.response?.status,
+      });
+    }
+  }
+};
+
+export const removeFromCart = async (
+  productId: string,
+  size?: string,
+  color?: string,
+  dimension?: string,
+) => {
+  try {
+    const res = await axiosWithConfig.post("cart/remove", {
+      productId,
+      size,
+      color,
+      dimension,
+    });
 
     return res.data as IResponse;
   } catch (error) {

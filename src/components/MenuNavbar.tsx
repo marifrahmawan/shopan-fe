@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect } from "react";
 import { getUserCart } from "@/utils/api/cart";
 import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
-import { USER_CART_DATA } from "@/utils/redux/userCartSlice";
+import { ICartRedux, USER_CART_DATA } from "@/utils/redux/userCartSlice";
 import { toast } from "./ui/use-toast";
 
 const searchSchema = z.object({
@@ -49,9 +49,21 @@ const MenuNavbar = () => {
       const res = await getUserCart();
 
       if (res?.data !== null) {
-        const cartRedux = res!.data.products!.map((product) => {
-          return { productId: product.productId._id };
+        const cartRedux: ICartRedux[] = res!.data.products!.map((product) => {
+          return {
+            _id: product._id,
+            productId: product.productId._id,
+            productName: product.productId.productName,
+            productPicture: product.productId.productPicture[0],
+            quantity: product.quantity,
+            size: product.size,
+            color: product.color,
+            dimension: product.dimension,
+            price: product.price,
+            totalPrice: product.totalPrice,
+          };
         });
+
         dispatch(USER_CART_DATA(cartRedux));
       }
     } catch (error: any) {

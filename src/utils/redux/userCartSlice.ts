@@ -1,8 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface ICartRedux {
-  productId: string | undefined;
+export interface ICartRedux {
+  _id?: string;
+  productId: string;
+  productName: string;
+  productPicture: string;
+  quantity: number;
+  size?: string;
+  color?: string;
+  dimension?: string;
+  price: number;
+  totalPrice?: number;
 }
 
 const initialState: ICartRedux[] = [];
@@ -12,21 +21,83 @@ export const userCartSlice = createSlice({
   initialState,
   reducers: {
     USER_CART_DATA: (state, action: PayloadAction<ICartRedux[]>) => {
-      action.payload.map((e) => state.push(e));
+      action.payload.map((data) => {
+        return state.push({ ...data });
+      });
     },
 
     ADD_PRODUCT_TO_CART: (state, action: PayloadAction<ICartRedux>) => {
       const productIndex = state.findIndex(
-        (e) => e.productId === action.payload.productId,
+        (e) =>
+          e.productId === action.payload.productId &&
+          e.color === action.payload.color &&
+          e.dimension === action.payload.dimension &&
+          e.size === action.payload.size,
       );
 
       if (productIndex < 0) {
-        state.push({ productId: action.payload.productId });
+        state.push(action.payload);
+      } else {
+        state[productIndex].quantity += action.payload.quantity;
+        state[productIndex].totalPrice! += action.payload.price * action.payload.quantity; // prettier-ignore
       }
+    },
+
+    REDUCE_PRODUCT_FROM_CART: (
+      state,
+      action: PayloadAction<{
+        productId: string;
+        size?: string;
+        color?: string;
+        dimension?: string;
+      }>,
+    ) => {
+      const { productId, color, dimension, size } = action.payload;
+
+      const productIndex = state.findIndex(
+        (e) =>
+          e.productId === productId &&
+          e.color === color &&
+          e.size === size &&
+          e.dimension === dimension,
+      );
+
+      if (state[productIndex].quantity === 1) {
+        state.splice(productIndex, 1);
+      } else {
+        state[productIndex].quantity -= 1;
+        state[productIndex].totalPrice! -= state[productIndex].price;
+      }
+    },
+
+    REMOVE_FROM_CART: (
+      state,
+      action: PayloadAction<{
+        productId: string;
+        size?: string;
+        color?: string;
+        dimension?: string;
+      }>,
+    ) => {
+      const { productId, color, dimension, size } = action.payload;
+      const productIndex = state.findIndex(
+        (e) =>
+          e.productId === productId &&
+          e.color === color &&
+          e.size === size &&
+          e.dimension === dimension,
+      );
+
+      state.splice(productIndex, 1);
     },
   },
 });
 
-export const { USER_CART_DATA, ADD_PRODUCT_TO_CART } = userCartSlice.actions;
+export const {
+  USER_CART_DATA,
+  ADD_PRODUCT_TO_CART,
+  REDUCE_PRODUCT_FROM_CART,
+  REMOVE_FROM_CART,
+} = userCartSlice.actions;
 
 export default userCartSlice.reducer;

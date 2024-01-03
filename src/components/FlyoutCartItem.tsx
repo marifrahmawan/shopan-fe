@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
-import { addToCart, reduceCart } from "@/utils/api/cart";
+import { addToCart, reduceCart, removeFromCart } from "@/utils/api/cart";
 import { toast } from "./ui/use-toast";
 import { CustomHttpError } from "@/utils/api/CustomHttpError";
+import { useAppDispatch } from "@/utils/redux/hooks";
+import {
+  ADD_PRODUCT_TO_CART,
+  REDUCE_PRODUCT_FROM_CART,
+  REMOVE_FROM_CART,
+} from "@/utils/redux/userCartSlice";
 
 interface ICartItem {
+  _id?: string;
   productId: string;
-  productPicture: string;
   productName: string;
+  productPicture: string;
   productQuantity: number;
   productColor?: string;
   productSize?: string;
@@ -16,18 +23,47 @@ interface ICartItem {
 }
 
 const FlyoutCartItem = (props: ICartItem) => {
-  const [quantity, setQuantity] = useState(props.productQuantity);
+  const {
+    _id,
+    productId,
+    productName,
+    productPicture,
+    productQuantity,
+    productColor,
+    productSize,
+    productDimension,
+    productPrice,
+  } = props;
+
+  const dispatch = useAppDispatch();
+  const [quantity, setQuantity] = useState(productQuantity);
 
   const addToCartHandler = async () => {
-    setQuantity((prevState) => {
-      return prevState + 1;
-    });
-
     try {
-      const res = await addToCart(props.productId, 1);
-      toast({
-        description: <p>{res?.message}</p>,
+      setQuantity((prevState) => {
+        return prevState + 1;
       });
+
+      await addToCart(
+        props.productId,
+        1,
+        productColor,
+        productDimension,
+        productSize,
+      );
+      dispatch(
+        ADD_PRODUCT_TO_CART({
+          _id,
+          productId,
+          productName,
+          productPicture,
+          quantity: 1,
+          size: productSize,
+          color: productColor,
+          dimension: productDimension,
+          price: productPrice,
+        }),
+      );
     } catch (error) {
       if (error instanceof CustomHttpError) {
         toast({
@@ -39,14 +75,48 @@ const FlyoutCartItem = (props: ICartItem) => {
   };
 
   const reduceCartHandler = async () => {
-    setQuantity((prevState) => {
-      return prevState - 1;
-    });
-
     try {
-      const res = await reduceCart(props.productId);
+      setQuantity((prevState) => {
+        return prevState - 1;
+      });
 
-      console.log(res?.message);
+      await reduceCart(productId, productSize, productColor, productDimension);
+
+      dispatch(
+        REDUCE_PRODUCT_FROM_CART({
+          productId,
+          size: productSize,
+          color: productColor,
+          dimension: productDimension,
+        }),
+      );
+    } catch (error) {
+      if (error instanceof CustomHttpError) {
+        toast({
+          variant: "destructive",
+          description: <p>{error.message}</p>,
+        });
+      }
+    }
+  };
+
+  const removeFromCartHandler = async () => {
+    try {
+      await removeFromCart(
+        productId,
+        productSize,
+        productColor,
+        productDimension,
+      );
+
+      dispatch(
+        REMOVE_FROM_CART({
+          productId,
+          size: productSize,
+          color: productColor,
+          dimension: productDimension,
+        }),
+      );
     } catch (error) {
       if (error instanceof CustomHttpError) {
         toast({
@@ -72,7 +142,27 @@ const FlyoutCartItem = (props: ICartItem) => {
             <p className="mb-2 text-[14px] font-semibold">
               {props.productName}
             </p>
-            <p className="text-neutral-4 mb-3 text-[12px]">Color: White</p>
+
+            <div className="mb-3">
+              {props.productColor && (
+                <p className="text-neutral-4 text-[12px]">
+                  {props.productColor}
+                </p>
+              )}
+
+              {props.productSize && (
+                <p className="text-neutral-4 text-[12px]">
+                  {props.productSize}
+                </p>
+              )}
+
+              {props.productDimension && (
+                <p className="text-neutral-4 text-[12px]">
+                  {props.productDimension}
+                </p>
+              )}
+            </div>
+
             <div className="p-[1px flex w-fit rounded-lg border border-slate-400">
               <button
                 className={`w-7 rounded-bl-[7px] rounded-tl-[7px] font-semibold ${
@@ -99,7 +189,10 @@ const FlyoutCartItem = (props: ICartItem) => {
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <button className="flex w-full justify-center">
+            <button
+              className="flex w-full justify-center"
+              onClick={removeFromCartHandler}
+            >
               <Trash2 className="h-6 w-6 stroke-red-600" />
             </button>
           </div>

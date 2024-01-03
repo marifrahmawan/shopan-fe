@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 
 import {
   Sheet,
@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/sheet";
 
 import { Button } from "./ui/button";
-import { ICart, getUserCart } from "@/utils/api/cart";
+
 import FlyoutCartItem from "./FlyoutCartItem";
+import { useAppSelector } from "@/utils/redux/hooks";
 
 interface IProps {
   children: ReactNode;
@@ -18,41 +19,26 @@ interface IProps {
 
 const FlyoutCart = (props: IProps) => {
   const { children } = props;
-  const [openFlyOutCart, setOpenFlyOutCart] = useState(false);
-  const [cartData, setCartData] = useState<ICart>();
 
-  const fetchCartData = async () => {
-    try {
-      const res = await getUserCart();
-
-      setCartData(res?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (openFlyOutCart) {
-      fetchCartData();
-    }
-    if (!openFlyOutCart) {
-      setCartData(undefined);
-    }
-  }, [openFlyOutCart]);
+  const cartData = useAppSelector((state) => state.cart);
 
   return (
-    <Sheet open={openFlyOutCart} onOpenChange={setOpenFlyOutCart}>
+    <Sheet>
       <SheetTrigger>{children}</SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Cart</SheetTitle>
         </SheetHeader>
-        {cartData?.products?.map((product) => (
+        {cartData?.map((product, index) => (
           <FlyoutCartItem
-            key={product.productId._id}
-            productId={product.productId._id}
-            productName={product.productId.productName}
-            productPicture={product.productId.productPicture[0]}
+            key={index}
+            _id={product._id}
+            productId={product.productId}
+            productName={product.productName}
+            productPicture={product.productPicture}
+            productColor={product.color}
+            productSize={product.size}
+            productDimension={product.dimension}
             productQuantity={product.quantity}
             productPrice={product.price}
           />
