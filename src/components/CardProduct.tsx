@@ -14,19 +14,18 @@ interface IProducts {
 
 const CardProduct = (props: IProducts) => {
   const navigate = useNavigate();
-
   const { id, productImage, productName, price, ratings } = props;
 
   return (
     <div
-      className="col-auto h-full rounded-lg p-4 shadow-lg hover:cursor-pointer dark:border"
+      className="my-3 h-full w-full rounded-lg p-4 shadow-lg transition-all duration-300 ease-in-out hover:cursor-pointer dark:border mt-2"
       onClick={() => navigate(`/product/${id}`)}
     >
       <div className="relative mb-3 h-[200px] w-full overflow-hidden rounded-md md:h-[349px]">
         <img
           src={productImage}
           alt="table lamp"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
         />
         <div className="absolute top-0 flex w-full justify-between pl-4 pr-4 pt-4">
           <span>

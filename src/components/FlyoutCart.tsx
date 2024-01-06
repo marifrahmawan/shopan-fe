@@ -29,9 +29,9 @@ const FlyoutCart = (props: IProps) => {
         <SheetHeader>
           <SheetTitle>Cart</SheetTitle>
         </SheetHeader>
-        {cartData?.map((product, index) => (
+        {cartData?.map((product) => (
           <FlyoutCartItem
-            key={index}
+            key={product._id}
             _id={product._id}
             productId={product.productId}
             productName={product.productName}

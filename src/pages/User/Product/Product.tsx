@@ -14,9 +14,9 @@ import Footer from "@/components/Footer";
 import { cn } from "@/utils/utils";
 
 import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { ADD_PRODUCT_TO_CART } from "@/utils/redux/userCartSlice";
 import { IProduct, getProductById } from "@/utils/api/products";
 import { addToCart } from "@/utils/api/cart";
-import { ADD_PRODUCT_TO_CART } from "@/utils/redux/userCartSlice";
 
 const Product = () => {
   const { product_id } = useParams();
@@ -55,6 +55,7 @@ const Product = () => {
 
       dispatch(
         ADD_PRODUCT_TO_CART({
+          _id: Math.random().toString(),
           productId: productId,
           productName: product!.productName,
           productPicture: product!.productPicture[0],
@@ -93,7 +94,7 @@ const Product = () => {
                 className="aspect-[1/1] h-[300px] cursor-grab object-cover md:h-[600px]"
                 key={productPic}
               >
-                <img src={productPic} className="h-full" />
+                <img src={productPic} className="h-full object-cover" />
               </div>
             ))}
           </ProductCarousel>

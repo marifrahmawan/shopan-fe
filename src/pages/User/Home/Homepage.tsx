@@ -1,119 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { articles } from "../../../data";
-
 import AdsSlider from "@/components/AdsSlider";
-import CardProduct from "@/components/CardProduct";
-import CardArticle from "@/components/CardArticle";
-
-import livingRoomImage from "@/assets/img/living-room.jpg";
-import bedRoomImage from "@/assets/img/bedroom.jpg";
-import kitchenRoomImage from "@/assets/img/kitchen.jpg";
-import banner from "@/assets/img/spacejoy-c0JoR_-2x3E-unsplash.jpg";
-import bgNewsletter from "@/assets/img/alex-plesovskich-iRMlWAOzwtM-unsplash.jpg";
 
 import Footer from "@/components/Footer";
-import { Banknote, Lock, Mail, Phone, Truck } from "lucide-react";
+import { Banknote, Lock, Phone, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { IProduct, getProducts } from "@/utils/api/products";
-import { toast } from "@/components/ui/use-toast";
+
+import LatestProduct from "@/components/LatestProduct";
 
 const Homepage = () => {
-  const [newArrivalProducts, setNewArrivalProducts] = useState<IProduct[] | undefined>([]) // prettier-ignore
-
-  const fetchNewArrivalProducts = async () => {
-    try {
-      const res = await getProducts({ limit: "4" });
-
-      setNewArrivalProducts(res?.data);
-    } catch (error: any) {
-      toast({
-        description: <p>{error.data.message}</p>,
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetchNewArrivalProducts();
-  }, []);
   return (
     <div className="container">
       <AdsSlider />
-
-      <div className="mb-10 flex flex-col items-start justify-between md:flex-row md:items-center">
-        <section>
-          <h2 className="text-[30px] leading-8 md:text-[35px] lg:text-[45px] lg:leading-none xl:text-[72px]">
-            Simply Unique
-            <span className="text-[32px] text-slate-400 md:text-[37px] lg:text-[47px] xl:text-[84px]">
-              /
-            </span>
-            <p>Simply Better</p>
-          </h2>
-        </section>
-        <section className="mt-2 w-[full] text-slate-500 md:mt-0 md:w-[350px] xl:w-[453px]">
-          <span className="font-medium text-black dark:text-white">Shopan</span>{" "}
-          is a gift & decorations store based in Jakarta, Indonesia. Est since
-          2019.
-        </section>
-      </div>
-
-      <div className="flex h-fit flex-col gap-6 lg:h-[664px] lg:flex-row">
-        <div className="h-[361px] flex-1 md:h-full">
-          <div className="relative h-full w-full">
-            <img
-              src={livingRoomImage}
-              alt="living Room image"
-              className="h-full w-full object-cover"
-            />
-
-            <div className="text-neutral-3 absolute left-12 top-12 bg-black/60 p-3">
-              <h5 className="font-medium text-white">Living Room</h5>
-              <a
-                href="./"
-                className="mt-4 border-b border-gray-300 font-medium text-gray-300 hover:border-slate-400 hover:text-slate-400"
-              >
-                Shop Now &#10141;
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid h-fit flex-1 grid-rows-2 gap-4 md:h-full">
-          <div className="relative h-[361px] md:h-[324px] lg:h-full">
-            <img
-              src={bedRoomImage}
-              alt="bed room"
-              className="h-full w-full object-cover"
-            />
-            <div className="text-neutral-3 absolute left-12 top-12 bg-black/60 p-3">
-              <h5 className="font-medium text-white">Bed Room</h5>
-              <a
-                href="./"
-                className="mt-4 border-b border-gray-300 font-medium text-gray-300 hover:border-slate-400 hover:text-slate-400"
-              >
-                Shop Now &#10141;
-              </a>
-            </div>
-          </div>
-          <div className="relative h-[361px] md:h-[324px] lg:h-full">
-            <img
-              src={kitchenRoomImage}
-              alt="kitchen"
-              className="h-full w-full object-cover"
-            />
-            <div className="text-neutral-3 absolute left-12 top-12 bg-black/60 p-3">
-              <h5 className="font-medium text-white">Kitchen</h5>
-              <a
-                href="./"
-                className="mt-4 border-b border-gray-300 font-medium text-gray-300 hover:border-slate-400 hover:text-slate-400"
-              >
-                Shop Now &#10141;
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      
       <div className="my-12 flex justify-between">
         <div className="w-[149px]">
           <h4>New Arrivals</h4>
@@ -125,20 +22,7 @@ const Homepage = () => {
         </div>
       </div>
 
-      <div className="mb-14 grid grid-cols-2 place-items-stretch gap-6 md:mb-28 lg:grid-cols-4">
-        {newArrivalProducts?.map((product) => {
-          return (
-            <CardProduct
-              key={product._id}
-              id={product._id}
-              productName={product.productName}
-              productImage={product.productPicture[0]}
-              price={product.productPrice}
-              ratings={5}
-            />
-          );
-        })}
-      </div>
+      <LatestProduct />
 
       <div className="mb-12 grid grid-cols-2 gap-6 lg:grid-cols-4">
         <div className="col-auto border bg-gray-200 px-8 py-4 dark:bg-slate-800 md:py-12">
@@ -184,86 +68,6 @@ const Homepage = () => {
           <p className="text-[12px] text-slate-400 md:text-[14px]">
             Phone and Email support
           </p>
-        </div>
-      </div>
-
-      <div className="mb-9 flex h-fit flex-col md:mb-20 md:h-[532px] md:flex-row">
-        <div className="h-full w-full md:w-1/2">
-          <img
-            src={banner}
-            alt="living room"
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="flex h-full w-full items-center p-5 md:w-1/2 md:pl-[72px]">
-          <div className="w-[452px]">
-            <p className="mb-4 text-left font-bold text-secondary-blue">
-              SALE UP TO 35% OFF
-            </p>
-            <span className="leading-10">
-              <h4 className="font-medium">HUNDREDS of</h4>
-              <h4 className="font-medium">New Lower prices!</h4>
-            </span>
-            <p className="mb-6 mt-4 text-[20px] leading-8">
-              It's more affordable than ever to give every room in your home a
-              stylish makeover
-            </p>
-            <a
-              href="./"
-              className="border-b border-black font-medium hover:border-slate-400 hover:text-slate-400"
-            >
-              Shop now &#10141;
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="mb-10 flex items-end justify-between">
-        <h4>Articles</h4>
-        <span>
-          <a href="./" className="border-neutral-7 border-b font-medium">
-            More Articles &#10141;
-          </a>
-        </span>
-      </div>
-      <div className="mb-8 grid grid-cols-1 gap-6 md:mb-16 md:grid-cols-3">
-        {articles.map(({ id, titleArticle, imageArticle }) => {
-          return (
-            <CardArticle
-              key={id}
-              id={id}
-              titleArticle={titleArticle}
-              imageArticle={imageArticle}
-            />
-          );
-        })}
-      </div>
-
-      <div className="relative h-[360px] w-full bg-neutral-200 md:bg-none">
-        <img
-          src={bgNewsletter}
-          alt="chair"
-          className="hidden h-full w-full object-cover object-center md:block"
-        />
-        <div className="absolute top-0 flex h-full w-full items-center justify-center">
-          <div className="flex flex-col items-center justify-center rounded-md bg-white/40 bg-opacity-20 p-5 pb-6 backdrop-blur-sm dark:bg-black/40 md:p-7">
-            <h4 className="mb-2 text-2xl md:text-[40px]">
-              Join Our Newsletter
-            </h4>
-            <p className="mb-8 text-center">
-              Sign up for deals, new product and promotions
-            </p>
-            <div className="flex w-full items-center justify-center border-b border-black dark:border-white md:w-96">
-              <div className="h-6 w-6">
-                <Mail />
-              </div>
-              <input
-                type="text"
-                className="w-full bg-transparent px-3 py-2 text-[14px] text-black placeholder:text-gray-300 focus:outline-none"
-                placeholder="Email address"
-              />
-            </div>
-          </div>
         </div>
       </div>
 

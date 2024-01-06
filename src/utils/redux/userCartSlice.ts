@@ -36,7 +36,10 @@ export const userCartSlice = createSlice({
       );
 
       if (productIndex < 0) {
-        state.push(action.payload);
+        state.push({
+          ...action.payload,
+          totalPrice: action.payload.quantity * action.payload.price,
+        });
       } else {
         state[productIndex].quantity += action.payload.quantity;
         state[productIndex].totalPrice! += action.payload.price * action.payload.quantity; // prettier-ignore
@@ -62,11 +65,11 @@ export const userCartSlice = createSlice({
           e.dimension === dimension,
       );
 
-      if (state[productIndex].quantity === 1) {
-        state.splice(productIndex, 1);
-      } else {
+      if (state[productIndex].quantity > 1) {
         state[productIndex].quantity -= 1;
         state[productIndex].totalPrice! -= state[productIndex].price;
+      } else {
+        state.splice(productIndex, 1);
       }
     },
 

@@ -16,7 +16,6 @@ const AdsCorousel = ({ children }: IProps) => {
         infiniteLoop={true}
         emulateTouch={true}
         showIndicators={true}
-        dynamicHeight={true}
         useKeyboardArrows={true}
         showThumbs={false}
         autoPlay={true}

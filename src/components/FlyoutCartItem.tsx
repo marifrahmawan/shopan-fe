@@ -51,6 +51,7 @@ const FlyoutCartItem = (props: ICartItem) => {
         productDimension,
         productSize,
       );
+
       dispatch(
         ADD_PRODUCT_TO_CART({
           _id,

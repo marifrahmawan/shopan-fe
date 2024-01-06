@@ -11,7 +11,11 @@ export const getUserCart = async () => {
     return res.data as IResponse<ICart>;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data;
+      throw new CustomHttpError({
+        name: "HTTP_ERROR",
+        message: error.response?.data.message,
+        statusCode: error.response?.status,
+      });
     }
   }
 };

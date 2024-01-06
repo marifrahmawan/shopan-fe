@@ -1,21 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as z from "zod";
+import { useEffect } from "react";
+
 import { NavLink } from "react-router-dom";
+
+import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import shopanLogo from "../assets/img/shopan-logo.png";
 import { MenuIcon, Search, ShoppingBag } from "lucide-react";
 
-import FlyoutCart from "./FlyoutCart";
 import MobileMenu from "./MobileMenu";
+import FlyoutCart from "./FlyoutCart";
+import { toast } from "./ui/use-toast";
 import DropDownUserMenu from "./DropDownUserMenu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect } from "react";
+
 import { getUserCart } from "@/utils/api/cart";
+import { CustomHttpError } from "@/utils/api/CustomHttpError";
 import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
 import { ICartRedux, USER_CART_DATA } from "@/utils/redux/userCartSlice";
-import { toast } from "./ui/use-toast";
 
 const searchSchema = z.object({
   search: z.string().min(1, { message: "Enter product name" }),
@@ -26,6 +29,7 @@ type SearchType = z.infer<typeof searchSchema>;
 const MenuNavbar = () => {
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart);
+  const user = useAppSelector((state) => state.user.data);
 
   const {
     handleSubmit,
@@ -66,11 +70,15 @@ const MenuNavbar = () => {
 
         dispatch(USER_CART_DATA(cartRedux));
       }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        description: <p>{error.message}</p>,
-      });
+    } catch (error) {
+      if (error instanceof CustomHttpError) {
+        if (user !== undefined && user.role === "user") {
+          toast({
+            variant: "destructive",
+            description: <p>{error.message}</p>,
+          });
+        }
+      }
     }
   };
 
@@ -100,13 +108,13 @@ const MenuNavbar = () => {
           onSubmit={handleSubmit(searchHandler)}
           className="hidden md:block"
         >
-          <div className="dark:border-bg-white flex h-[40px] w-[500px] items-center overflow-hidden rounded-full border pr-3 lg:w-[700px]">
+          <div className="dark:border-bg-white flex h-[40px] w-[500px] items-center overflow-hidden rounded-lg border bg-background pr-3 lg:w-[700px]">
             <input
               type="text"
               id="search"
               className="h-full w-full pl-5 focus:outline-none dark:bg-background"
               disabled={isSubmitting}
-              placeholder="Search products..."
+              placeholder="Search"
               autoComplete="off"
               {...register("search")}
             />
@@ -120,14 +128,16 @@ const MenuNavbar = () => {
         </form>
 
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-0">
-          <span className="relative h-7 w-7 md:mr-5">
-            <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] font-bold text-white dark:bg-white dark:text-black">
-              {cart.length}
+          {user?.role !== "admin" && (
+            <span className="relative h-7 w-7 md:mr-5">
+              <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] font-bold text-white dark:bg-white dark:text-black">
+                {cart.length}
+              </span>
+              <FlyoutCart>
+                <ShoppingBag className="h-7 w-7 hover:cursor-pointer" />
+              </FlyoutCart>
             </span>
-            <FlyoutCart>
-              <ShoppingBag className="h-7 w-7 hover:cursor-pointer" />
-            </FlyoutCart>
-          </span>
+          )}
 
           <span className="h-8 w-8">
             <DropDownUserMenu>

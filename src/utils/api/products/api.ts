@@ -3,6 +3,7 @@ import { IProduct, ProductType } from ".";
 import axiosWithConfig from "../axiosWithConfig";
 import { IResponse } from "../types";
 import { IParamsRequest } from "@/utils/types/api";
+import { CustomHttpError } from "../CustomHttpError";
 
 export const getProducts = async (params?: IParamsRequest) => {
   try {
@@ -23,7 +24,11 @@ export const getProducts = async (params?: IParamsRequest) => {
     return res.data as IResponse<IProduct[] | undefined>;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response;
+      throw new CustomHttpError({
+        name: "HTTP_ERROR",
+        message: error.response?.data.message,
+        statusCode: error.response?.status,
+      });
     }
   }
 };
