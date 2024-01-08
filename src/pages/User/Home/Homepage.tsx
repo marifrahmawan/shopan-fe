@@ -2,29 +2,19 @@ import AdsSlider from "@/components/AdsSlider";
 
 import Footer from "@/components/Footer";
 import { Banknote, Lock, Phone, Truck } from "lucide-react";
-import { Link } from "react-router-dom";
 
 import LatestProduct from "@/components/LatestProduct";
+import CategoryCard from "@/components/CategoryCard";
 
 const Homepage = () => {
   return (
     <div className="container">
       <AdsSlider />
-      
-      <div className="my-12 flex justify-between">
-        <div className="w-[149px]">
-          <h4>New Arrivals</h4>
-        </div>
-        <div className="border-neutral-7 flex items-end border-b">
-          <Link to="/shop" className="font-medium">
-            More Products &#10141;
-          </Link>
-        </div>
-      </div>
+      <CategoryCard />
 
       <LatestProduct />
 
-      <div className="mb-12 grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <div className="my-12 grid grid-cols-2 gap-6 lg:grid-cols-4">
         <div className="col-auto border bg-gray-200 px-8 py-4 dark:bg-slate-800 md:py-12">
           <div className="mb-2 h-9 w-9 md:mb-4 md:h-12 md:w-12">
             <Truck className="h-full w-full" />

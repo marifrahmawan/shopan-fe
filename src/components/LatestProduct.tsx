@@ -11,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Link } from "react-router-dom";
 
 const LatestProduct = () => {
   const [newArrivalProducts, setNewArrivalProducts] = useState<IProduct[] | undefined>([]) // prettier-ignore
@@ -36,11 +37,23 @@ const LatestProduct = () => {
 
   return (
     <Carousel
-      className="min-w-full max-w-sm my-5"
+      className="mb-5 min-w-full max-w-sm"
       opts={{
         slidesToScroll: 1,
       }}
     >
+      <div className="mb-2 flex justify-between">
+        <div className="w-[149px]">
+          <h3 className="text-xl font-semibold tracking-tight">
+            New Arrivals
+          </h3>
+        </div>
+        <div className="border-neutral-7 flex items-end border-b">
+          <Link to="/shop" className="font-medium">
+            More Products &#10141;
+          </Link>
+        </div>
+      </div>
       <CarouselContent className="-ml-1">
         {newArrivalProducts?.map((product) => {
           return (
@@ -61,8 +74,8 @@ const LatestProduct = () => {
           );
         })}
       </CarouselContent>
-      <CarouselPrevious className="left-2 md:-left-10" />
-      <CarouselNext className="right-2 md:-right-10" />
+      <CarouselPrevious className="left-2 lg:-left-10" />
+      <CarouselNext className="right-2 lg:-right-10" />
     </Carousel>
   );
 };

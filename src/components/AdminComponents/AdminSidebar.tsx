@@ -1,44 +1,80 @@
+import { Links } from "@/utils/links";
+import { cn } from "@/utils/utils";
+import { ChevronLeft, MenuIcon } from "lucide-react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const AdminSidebar = () => {
-  return (
-    <div className="sticky left-0 top-[97px] h-[800px]">
-      <div className="hidden h-full w-[300px] min-w-[300px] rounded-xl bg-[#F3F5F7] dark:border dark:bg-inherit md:block">
-        <div className="relative flex w-full justify-center py-2">
-          <div className="h-[150px] w-[150px] overflow-clip rounded-full">
-            <img src="https://github.com/shadcn.png" alt="profile pict" />
-            {/* <div className="absolute bottom-0 right-[84px] z-20 rounded-full bg-black p-2 dark:bg-white">
-              <label htmlFor="profilePicture">
-                <Camera className="stroke-white dark:stroke-black" />
-              </label>
-            </div> */}
-          </div>
-        </div>
-        <div className="mt-4 flex flex-col">
-          <NavLink
-            to={"/admin/"}
-            className={({ isActive }) =>
-              isActive
-                ? "flex h-[35px] items-center bg-neutral-300 px-5 py-5 font-semibold dark:text-black"
-                : "flex h-[35px] items-center px-5 py-5 text-black dark:text-white"
-            }
-          >
-            <p className="">Accounts</p>
-          </NavLink>
+  const [menuExpand, setMenuExpand] = useState(true);
 
-          <NavLink
-            to={"/admin/products"}
-            className={({ isActive }) =>
-              isActive
-                ? "flex h-[35px] items-center bg-neutral-300 px-5 py-5 font-semibold dark:text-black"
-                : "flex h-[35px] items-center px-5 py-5 text-black dark:text-white"
-            }
+  return (
+    <aside className="min-h-screen">
+      <nav className="flex h-full flex-col border-l border-r px-3 py-5">
+        <div
+          className={cn(
+            `mb-8 flex items-center ${
+              menuExpand ? "w-44 justify-between" : "justify-center w-full"
+            }`,
+          )}
+        >
+          <img
+            src="https://img.logoipsum.com/243.svg"
+            alt="logo"
+            className={cn(
+              `overflow-hidden transition-all duration-300 ease-in-out ${
+                menuExpand ? "w-32" : "w-0"
+              }`,
+            )}
+          />
+
+          <button
+            className="h-6 w-6 rounded-full p-1 hover:bg-yellow-300"
+            onClick={() => setMenuExpand((prevState) => !prevState)}
           >
-            <p className="">Products</p>
-          </NavLink>
+            {menuExpand ? (
+              <ChevronLeft className="h-full w-full" />
+            ) : (
+              <MenuIcon className="h-full w-full" />
+            )}
+          </button>
         </div>
-      </div>
-    </div>
+
+        {Links.map(({ to, icon: Icon, label }) => (
+          <NavLink to={to} className="mb-2" key={label}>
+            {({ isActive }) => (
+              <div
+                className={`group/icon relative flex items-center gap-2 rounded-lg p-2  ${
+                  isActive
+                    ? "bg-gradient-to-tr from-yellow-200 to-yellow-600 text-base font-semibold dark:text-black"
+                    : "hover:bg-gradient-to-tr from-yellow-200 to-yellow-600"
+                }`}
+              >
+                <Icon />
+                <p
+                  className={cn(
+                    `overflow-hidden transition-all ${
+                      menuExpand ? "w-fit" : "hidden w-0"
+                    }`,
+                  )}
+                >
+                  {label}
+                </p>
+
+                {!menuExpand && (
+                  <p
+                    className={cn(
+                      `invisible absolute left-full ml-1 -translate-x-3 rounded-md bg-yellow-300 px-2 py-1 text-sm opacity-20 transition-all group-hover/icon:visible group-hover/icon:translate-x-0 group-hover/icon:opacity-100`,
+                    )}
+                  >
+                    {label}
+                  </p>
+                )}
+              </div>
+            )}
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
   );
 };
 

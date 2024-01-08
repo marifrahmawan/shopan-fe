@@ -40,7 +40,11 @@ export const getProductById = async (productId: string) => {
     return res.data as IResponse<IProduct>;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response;
+      throw new CustomHttpError({
+        name: "HTTP_ERROR",
+        message: error.response?.data.message,
+        statusCode: error.response?.status,
+      });
     }
   }
 };

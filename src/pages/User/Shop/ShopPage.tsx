@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import bannerImage from "@/assets/img/dan-gold-4HG3Ca3EzWw-unsplash.jpg";
-// import { products } from "@/data";
 import CardProduct from "@/components/CardProduct";
 import { SlidersHorizontalIcon } from "lucide-react";
 import { IProduct, getProducts } from "@/utils/api/products";
@@ -31,7 +30,7 @@ const ShopPage = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container mb-4 h-full">
       <div className="relative mb-14 mt-2 h-[400px] w-full">
         <img
           src={bannerImage}
@@ -56,12 +55,9 @@ const ShopPage = () => {
             <p className="text-[20px] font-semibold">Filter</p>
           </div>
         </div>
-        {/* PRODUCT LIST */}
-        <div className="w-full">
-          <div className="mb-12 flex justify-between">
-            <p className="text-[20px] font-semibold">Living Room</p>
-          </div>
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+
+        <div className="h-full w-full">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
             {products?.map((product) => {
               return (
                 <CardProduct

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  IProduct,
   ProductType,
   createProduct,
   productSchema,
@@ -26,11 +27,15 @@ import { Button } from "@/components/ui/button";
 import TipTap from "@/components/AdminComponents/TipTap";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
 // import { Textarea } from "@/components/ui/textarea";
 
-const AddProductForm = () => {
+const EditProductForm = () => {
   const navigate = useNavigate();
+
+  const { state } = useLocation();
+  const product: IProduct = state;
 
   const [sizeInputColumn, setSizeInputColumn] = useState(0);
   const [colorInputColumn, setColorInputColumn] = useState(0);
@@ -90,6 +95,29 @@ const AddProductForm = () => {
     }
   }, [form, sizeInputColumn, colorInputColumn, dimensionInputColumn]);
 
+  useEffect(() => {
+    if (product.productSize.length > 0) {
+      setSizeInputColumn(product.productSize.length);
+      form.setValue("productSize", product.productSize);
+    }
+
+    if (product.productColor.length > 0) {
+      setColorInputColumn(product.productColor.length);
+      form.setValue("productColor", product.productColor);
+    }
+
+    if (product.productDimension.length > 0) {
+      setDimensionInputColumn(product.productDimension.length);
+      form.setValue("productDimension", product.productDimension);
+    }
+
+    form.setValue("productName", product.productName);
+    form.setValue("productPrice", product.productPrice.toString());
+    form.setValue("productBrand", product.productBrand);
+    form.setValue("productAvailable", product.productAvailable);
+    form.setValue("productStock", product.productStock.toString());
+  }, []);
+
   const productSubmitHandler = async (values: ProductType) => {
     try {
       const res = await createProduct(values);
@@ -113,8 +141,10 @@ const AddProductForm = () => {
   };
 
   return (
-    <div className="w-[900px]">
-      <p className="mb-5 w-full text-[22px] font-semibold">Add Products</p>
+    <div className="w-[900px] pb-5">
+      <p className="mb-5 w-full border-b pb-2 text-[22px] font-semibold">
+        {product.productName}
+      </p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(productSubmitHandler)}>
@@ -144,7 +174,10 @@ const AddProductForm = () => {
                     {...field}
                     className="h-[200px]"
                   /> */}
-                  <TipTap fieldName={""} onChange={field.onChange} />
+                  <TipTap
+                    fieldName={product.productDetail}
+                    onChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -258,6 +291,8 @@ const AddProductForm = () => {
                         <Input
                           key={field.name}
                           placeholder="Size"
+                          className="w-[200px]"
+                          value={field.value as string}
                           {...form.register(`productSize.${key}`)}
                         />
                       </FormControl>
@@ -299,6 +334,11 @@ const AddProductForm = () => {
                           key={field.name}
                           placeholder="Color"
                           className="w-[200px]"
+                          value={
+                            field.value !== undefined
+                              ? (field.value as string)
+                              : ""
+                          }
                           {...form.register(`productColor.${key}`)}
                         />
                       </FormControl>
@@ -381,4 +421,4 @@ const AddProductForm = () => {
   );
 };
 
-export default AddProductForm;
+export default EditProductForm;

@@ -35,7 +35,7 @@ const TipTap = ({ fieldName, onChange }: IProps) => {
   return (
     <div className="flex max-h-fit flex-col">
       <TipTapToolbar editor={editor} />
-      <EditorContent editor={editor} className="h-fit" />
+      <EditorContent editor={editor} className="h-fit tiptap" />
     </div>
   );
 };

@@ -14,6 +14,8 @@ import ProductsPage from "@/pages/Admin/Product/AdminProduct";
 import AddProductForm from "@/pages/Admin/Product/module/AddProductForm";
 import AdminProtectedRoutes from "./AdminProtectedRoutes";
 import AuthProtectedRoutes from "./AuthProtectedRoutes";
+import Category from "@/pages/Admin/Category";
+import EditProductForm from "@/pages/Admin/Product/module/EditProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -38,7 +40,7 @@ export const router = createBrowserRouter([
     element: <AdminProtectedRoutes />,
     children: [
       {
-        path: "admin",
+        path: "/admin",
         element: <AdminLayout />,
         children: [
           {
@@ -55,6 +57,19 @@ export const router = createBrowserRouter([
               {
                 path: "create",
                 element: <AddProductForm />,
+              },
+              {
+                path: "edit/:product_id",
+                element: <EditProductForm />,
+              },
+            ],
+          },
+          {
+            path: "category",
+            children: [
+              {
+                index: true,
+                element: <Category />,
               },
             ],
           },

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
 import { Star } from "lucide-react";
-import { cn } from "@/utils/utils";
+import { RpConvertion, cn } from "@/utils/utils";
 import { Separator } from "./ui/separator";
 
 interface IProducts {
@@ -18,14 +18,14 @@ const CardProduct = (props: IProducts) => {
 
   return (
     <div
-      className="my-3 h-full w-full rounded-lg p-4 shadow-lg transition-all duration-300 ease-in-out hover:cursor-pointer dark:border mt-2"
+      className="mt-2 h-full w-full rounded-lg p-4 shadow-lg transition-all duration-300 ease-in-out hover:cursor-pointer dark:border"
       onClick={() => navigate(`/product/${id}`)}
     >
       <div className="relative mb-3 h-[200px] w-full overflow-hidden rounded-md md:h-[349px]">
         <img
           src={productImage}
           alt="table lamp"
-          className="h-full w-full object-contain"
+          className="h-full w-full object-cover"
         />
         <div className="absolute top-0 flex w-full justify-between pl-4 pr-4 pt-4">
           <span>
@@ -62,16 +62,11 @@ const CardProduct = (props: IProducts) => {
 
       <div className="flex gap-3 text-sm">
         <p className="font-semibold text-secondary-green">
-          {new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            maximumFractionDigits: 0,
-            minimumFractionDigits: 0,
-          }).format(price)}
+          {RpConvertion(price)}
         </p>
         <p className="text-neutral-400 line-through">$400.00</p>
       </div>
-      <div className="mb-1 mt-2 flex items-center gap-1">
+      <div className="mt-2 flex items-center gap-1">
         <p className="text-[14px] font-semibold">{ratings}</p>
         <div className="h-full">
           <Star

@@ -25,15 +25,20 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className="relative">
+    <>
       <Toaster />
-      <AdminNavbarMenu />
-      <div className="container mt-8 flex gap-5">
+      {/* <AdminNavbarMenu /> */}
+      <div className="container flex p-0">
         <AdminSidebar />
 
-        <Outlet />
+        <div className="w-full">
+          <AdminNavbarMenu />
+          <section className="pl-5">
+            <Outlet />
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
