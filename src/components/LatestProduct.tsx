@@ -18,7 +18,7 @@ const LatestProduct = () => {
 
   const fetchNewArrivalProducts = async () => {
     try {
-      const res = await getProducts();
+      const res = await getProducts({limit: "8"});
 
       setNewArrivalProducts(res?.data);
     } catch (error) {

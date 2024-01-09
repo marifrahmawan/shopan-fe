@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+
 export interface IProduct {
   _id: string;
   productName: string;
@@ -15,16 +17,13 @@ export interface IProduct {
   productSold: number;
 }
 
-export const productSchema = z.object({
+const productSchemaBase = z.object({
   productName: z.string().min(1, { message: "Enter product name" }),
   productDetail: z.string().min(1, { message: "Enter product details" }),
   productPrice: z
     .string()
     .min(1, { message: "Enter product price" })
     .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter valid price"),
-  productPicture: z
-    .any()
-    .refine((file) => file?.length > 0, "Product picture is required."),
   productBrand: z.string().min(1, { message: "Enter product brand" }),
   productAvailable: z
     .boolean({
@@ -50,4 +49,83 @@ export const productSchema = z.object({
   ),
 });
 
-export type ProductType = z.infer<typeof productSchema>;
+export const addProductSchema = z
+  .object({
+    productPicture: z
+      .instanceof(FileList)
+      .refine(
+        (files) => {
+          // Check if all items in the array are instances of the File object
+          for (let i = 0; i < files.length; i++) {
+            return files[i] instanceof File;
+          }
+        },
+        {
+          // If the refinement fails, throw an error with this message
+          message: "Expected a file",
+        },
+      )
+      .refine(
+        (files) => {
+          for (let i = 0; i < files.length; i++) {
+            return files[i].size <= 2000000;
+          }
+        },
+        {
+          message: "File size should be less than 2mb.",
+        },
+      )
+      .refine(
+        (files) => {
+          for (let i = 0; i < files.length; i++) {
+            return ACCEPTED_IMAGE_TYPES.includes(files[i].type);
+          }
+        },
+        {
+          message: "Only these types are allowed .jpg, .jpeg and .png",
+        },
+      ),
+  })
+  .merge(productSchemaBase);
+
+export const editProductSchema = z
+  .object({
+    productPicture: z
+      .instanceof(FileList)
+      .refine(
+        (files) => {
+          // Check if all items in the array are instances of the File object
+          for (let i = 0; i < files.length; i++) {
+            return files[i] instanceof File;
+          }
+        },
+        {
+          // If the refinement fails, throw an error with this message
+          message: "Expected a file",
+        },
+      )
+      .refine(
+        (files) => {
+          for (let i = 0; i < files.length; i++) {
+            return files[i].size <= 2000000;
+          }
+        },
+        {
+          message: "File size should be less than 2mb.",
+        },
+      )
+      .refine(
+        (files) => {
+          for (let i = 0; i < files.length; i++) {
+            return ACCEPTED_IMAGE_TYPES.includes(files[i].type);
+          }
+        },
+        {
+          message: "Only these types are allowed .jpg, .jpeg and .png",
+        },
+      ),
+  })
+  .merge(productSchemaBase);
+
+export type AddProductType = z.infer<typeof addProductSchema>;
+export type EditProductType = z.infer<typeof editProductSchema>;

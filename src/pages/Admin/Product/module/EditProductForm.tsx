@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   IProduct,
-  ProductType,
+  AddProductType,
   createProduct,
-  productSchema,
+  addProductSchema,
 } from "@/utils/api/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -41,8 +41,8 @@ const EditProductForm = () => {
   const [colorInputColumn, setColorInputColumn] = useState(0);
   const [dimensionInputColumn, setDimensionInputColumn] = useState(0);
 
-  const form = useForm<ProductType>({
-    resolver: zodResolver(productSchema),
+  const form = useForm<AddProductType>({
+    resolver: zodResolver(addProductSchema),
     mode: "onTouched",
     defaultValues: {
       productName: "",
@@ -51,7 +51,7 @@ const EditProductForm = () => {
       productBrand: "",
       productAvailable: true,
       productStock: "",
-      productPicture: [],
+      productPicture: undefined,
       productSize: [],
       productColor: [],
       productDimension: [],
@@ -75,8 +75,8 @@ const EditProductForm = () => {
 
     if (watchColorInput.length > colorInputColumn) {
       watchColorInput.splice(
-        watchSizeInput.length - colorInputColumn,
-        watchSizeInput.length - colorInputColumn,
+        watchColorInput.length - colorInputColumn,
+        watchColorInput.length - colorInputColumn,
       );
     }
 
@@ -112,24 +112,27 @@ const EditProductForm = () => {
     }
 
     form.setValue("productName", product.productName);
+    form.setValue("productDetail", product.productDetail);
     form.setValue("productPrice", product.productPrice.toString());
     form.setValue("productBrand", product.productBrand);
     form.setValue("productAvailable", product.productAvailable);
     form.setValue("productStock", product.productStock.toString());
   }, []);
 
-  const productSubmitHandler = async (values: ProductType) => {
+  const productSubmitHandler = async (values: AddProductType) => {
     try {
-      const res = await createProduct(values);
+      // const res = await createProduct(values);
 
-      toast({
-        description: <p className="capitalize">{res?.message}</p>,
-      });
+      console.log(values);
 
-      setTimeout(() => {
-        navigate("/admin/products");
-      }, 400);
-      form.reset();
+      // toast({
+      //   description: <p className="capitalize">{res?.message}</p>,
+      // });
+
+      // setTimeout(() => {
+      //   navigate("/admin/products");
+      // }, 400);
+      // form.reset();
     } catch (error) {
       if (error instanceof Error) {
         toast({

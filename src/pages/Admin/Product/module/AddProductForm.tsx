@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  ProductType,
+  AddProductType,
+  addProductSchema,
   createProduct,
-  productSchema,
 } from "@/utils/api/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -36,8 +36,8 @@ const AddProductForm = () => {
   const [colorInputColumn, setColorInputColumn] = useState(0);
   const [dimensionInputColumn, setDimensionInputColumn] = useState(0);
 
-  const form = useForm<ProductType>({
-    resolver: zodResolver(productSchema),
+  const form = useForm<AddProductType>({
+    resolver: zodResolver(addProductSchema),
     mode: "onTouched",
     defaultValues: {
       productName: "",
@@ -46,7 +46,7 @@ const AddProductForm = () => {
       productBrand: "",
       productAvailable: true,
       productStock: "",
-      productPicture: [],
+      productPicture: undefined,
       productSize: [],
       productColor: [],
       productDimension: [],
@@ -70,8 +70,8 @@ const AddProductForm = () => {
 
     if (watchColorInput.length > colorInputColumn) {
       watchColorInput.splice(
-        watchSizeInput.length - colorInputColumn,
-        watchSizeInput.length - colorInputColumn,
+        watchColorInput.length - colorInputColumn,
+        watchColorInput.length - colorInputColumn,
       );
     }
 
@@ -90,7 +90,7 @@ const AddProductForm = () => {
     }
   }, [form, sizeInputColumn, colorInputColumn, dimensionInputColumn]);
 
-  const productSubmitHandler = async (values: ProductType) => {
+  const productSubmitHandler = async (values: AddProductType) => {
     try {
       const res = await createProduct(values);
 
@@ -175,7 +175,7 @@ const AddProductForm = () => {
                   <Input
                     placeholder="Product Pictures"
                     type="file"
-                    multiple
+                    multiple={true}
                     accept="image/jpg, image/jpeg, image/png"
                     {...form.register("productPicture")}
                   />

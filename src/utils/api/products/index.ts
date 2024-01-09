@@ -1,5 +1,5 @@
-import { productSchema, ProductType, IProduct } from "./type";
+import { addProductSchema, AddProductType, IProduct } from "./type";
 import { getProducts, getProductById, createProduct } from "./api";
 
-export { productSchema, getProducts, getProductById, createProduct };
-export type { ProductType, IProduct };
+export { addProductSchema, getProducts, getProductById, createProduct };
+export type { AddProductType, IProduct };

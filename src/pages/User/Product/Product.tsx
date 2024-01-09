@@ -91,7 +91,7 @@ const Product = () => {
           <ProductCarousel>
             {product?.productPicture.map((productPic) => (
               <div
-                className="aspect-[1/1] h-[300px] cursor-grab object-cover md:h-[600px]"
+                className="aspect-[1/1] h-[300px] cursor-grab object-cover md:h-full lg:h-[600px]"
                 key={productPic}
               >
                 <img src={productPic} className="h-full object-cover" />

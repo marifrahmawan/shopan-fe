@@ -55,16 +55,16 @@ export const createProduct = async (body: ProductType) => {
     let key: keyof typeof body;
 
     for (key in body) {
-      if (body[key].constructor === FileList) {
-        for (let i = 0; i < body[key].length; i++) {
-          formData.append(`${key}`, body[key][i]);
+      if (body[key] instanceof FileList) {
+        for (let i = 0; i < (body[key] as FileList).length; i++) {
+          formData.append(`${key}`, (body[key] as FileList)[i]);
         }
-      } else if (body[key].constructor === Array) {
-        for (let i = 0; i < body[key].length; i++) {
-          formData.append(`${key}[]`, body[key][i]);
+      } else if (body[key] instanceof Array) {
+        for (let i = 0; i < (body[key] as Array<string | number>).length; i++) {
+          formData.append(`${key}[]`, (body[key] as Array<string>)[i]);
         }
       } else {
-        formData.append(key, body[key]);
+        formData.append(key, body[key] as string);
       }
     }
 
@@ -73,7 +73,26 @@ export const createProduct = async (body: ProductType) => {
     return res.data as IResponse<ProductType>;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response;
+      throw new CustomHttpError({
+        name: "HTTP_ERROR",
+        message: error.response?.data.message,
+        statusCode: error.response?.status,
+      });
     }
   }
 };
+
+// export const updateProduct = async (body: ProductType) => {
+//   try {
+//     const formData = new FormData();
+
+//   } catch (error) {
+//     if(error instanceof AxiosError){
+//       throw new CustomHttpError({
+//         name: "HTTP_ERROR",
+//         message: error.response?.data.message,
+//         statusCode: error.response?.status,
+//       });
+//     }
+//   }
+// }
