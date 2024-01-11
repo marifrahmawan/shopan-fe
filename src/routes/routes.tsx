@@ -10,12 +10,13 @@ import Product from "@/pages/User/Product/Product";
 
 import AdminLayout from "@/components/Layout/AdminLayout";
 import AdminHomePage from "@/pages/Admin";
-import ProductsPage from "@/pages/Admin/Product/AdminProduct";
+import ProductsPage from "@/pages/Admin/Product";
 import AddProductForm from "@/pages/Admin/Product/module/AddProductForm";
 import AdminProtectedRoutes from "./AdminProtectedRoutes";
 import AuthProtectedRoutes from "./AuthProtectedRoutes";
 import Category from "@/pages/Admin/Category";
 import EditProductForm from "@/pages/Admin/Product/module/EditProductForm";
+import AddCategoryForm from "@/pages/Admin/Category/Module/AddCategoryForm";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <Category />,
+              },
+              {
+                path: "create",
+                element: <AddCategoryForm />,
               },
             ],
           },

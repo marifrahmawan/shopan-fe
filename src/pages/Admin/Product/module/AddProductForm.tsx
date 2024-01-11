@@ -27,7 +27,6 @@ import TipTap from "@/components/AdminComponents/TipTap";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-// import { Textarea } from "@/components/ui/textarea";
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -43,6 +42,7 @@ const AddProductForm = () => {
       productName: "",
       productDetail: "",
       productPrice: "",
+      productCategory: "",
       productBrand: "",
       productAvailable: true,
       productStock: "",
@@ -139,13 +139,33 @@ const AddProductForm = () => {
               <FormItem className="mt-5">
                 <FormLabel>Detail Product</FormLabel>
                 <FormControl>
-                  {/* <Textarea
-                    placeholder="Product Details"
-                    {...field}
-                    className="h-[200px]"
-                  /> */}
                   <TipTap fieldName={""} onChange={field.onChange} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productCategory"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value.toString()}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Category " />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="true">Sepatu</SelectItem>
+                    <SelectItem value="false">Baju</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

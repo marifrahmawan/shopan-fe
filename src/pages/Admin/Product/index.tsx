@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  Pencil,
+  PencilIcon,
   PlusCircle,
   Trash2Icon,
 } from "lucide-react";
@@ -37,6 +37,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { IProduct, getProducts } from "@/utils/api/products";
 import { Badge } from "@/components/ui/badge";
 import { RpConvertion } from "@/utils/utils";
+import DeleteProductDialog from "./module/DeleteProductDialog";
 
 const ProductsPage = () => {
   const { toast } = useToast();
@@ -88,81 +89,96 @@ const ProductsPage = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products?.map((product, index) => (
-              <TableRow key={product._id}>
-                <TableCell className="w-[30px] text-center">
-                  {index + 1}
-                </TableCell>
-                <TableCell className="w-[230px] min-w-[230px] font-medium">
-                  {product.productName}
-                </TableCell>
+            {products!.length > 0 ? (
+              <>
+                {products?.map((product, index) => (
+                  <TableRow key={product._id}>
+                    <TableCell className="w-[30px] text-center">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="w-[230px] min-w-[230px] font-medium">
+                      {product.productName}
+                    </TableCell>
 
-                <TableCell className="w-[120px] min-w-[120px]">
-                  {product.productBrand}
-                </TableCell>
+                    <TableCell className="w-[120px] min-w-[120px]">
+                      {product.productBrand}
+                    </TableCell>
 
-                <TableCell
-                  className={`w-[40px] text-center font-semibold ${
-                    product.productStock < 5
-                      ? "text-secondary-red"
-                      : "text-secondary-green"
-                  }`}
-                >
-                  {product.productStock}
-                </TableCell>
+                    <TableCell
+                      className={`w-[40px] text-center font-semibold ${
+                        product.productStock < 5
+                          ? "text-secondary-red"
+                          : "text-secondary-green"
+                      }`}
+                    >
+                      {product.productStock}
+                    </TableCell>
 
-                <TableCell className="w-[120px] min-w-[120px]">
-                  {product.productSize.length > 0 ? (
-                    <div className="grid w-[80px] grid-cols-3 gap-2">
-                      {product.productSize.map((size) => (
-                        <p key={size}>{size}</p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </TableCell>
+                    <TableCell className="w-[120px] min-w-[120px]">
+                      {product.productSize.length > 0 ? (
+                        <div className="grid w-[80px] grid-cols-3 gap-2">
+                          {product.productSize.map((size) => (
+                            <p key={size}>{size}</p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>-</p>
+                      )}
+                    </TableCell>
 
-                <TableCell className="w-[150px] max-w-[200px]">
-                  {product.productColor.length > 0 ? (
-                    <div className="flex w-full flex-wrap gap-2">
-                      {product.productColor.map((color) => (
-                        <Badge key={color}>{color}</Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </TableCell>
+                    <TableCell className="w-[150px] max-w-[200px]">
+                      {product.productColor.length > 0 ? (
+                        <div className="flex w-full flex-wrap gap-2">
+                          {product.productColor.map((color) => (
+                            <Badge key={color}>{color}</Badge>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>-</p>
+                      )}
+                    </TableCell>
 
-                <TableCell className="w-[150px] max-w-[200px]">
-                  {product.productDimension.length > 0 ? (
-                    <div className="flex w-full flex-wrap gap-2">
-                      {product.productDimension.map((dimension) => (
-                        <Badge key={dimension}>{dimension}</Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </TableCell>
+                    <TableCell className="w-[150px] max-w-[200px]">
+                      {product.productDimension.length > 0 ? (
+                        <div className="flex w-full flex-wrap gap-2">
+                          {product.productDimension.map((dimension) => (
+                            <Badge key={dimension}>{dimension}</Badge>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>-</p>
+                      )}
+                    </TableCell>
 
-                <TableCell className="w-[80px] text-center">
-                  {product.productSold}
-                </TableCell>
-                <TableCell className="w-[80px] text-center">
-                  {RpConvertion(product.productPrice)}
-                </TableCell>
-                <TableCell className="h-full">
-                  <div className="flex gap-2">
-                    <Link to={`edit/${product._id}`} state={product}>
-                      <Pencil className="h-5 w-5 stroke-secondary-green hover:cursor-pointer hover:stroke-green-600" />
-                    </Link>
-                    <Trash2Icon className="h-5 w-5 stroke-secondary-red hover:cursor-pointer hover:stroke-red-600" />
-                  </div>
-                </TableCell>
+                    <TableCell className="w-[80px] text-center">
+                      {product.productSold}
+                    </TableCell>
+                    <TableCell className="w-[80px] text-center">
+                      {RpConvertion(product.productPrice)}
+                    </TableCell>
+                    <TableCell className="h-full">
+                      <div className="flex gap-2">
+                        <Link to={`edit/${product._id}`} state={product}>
+                          <PencilIcon className="h-5 w-5 stroke-secondary-green hover:cursor-pointer hover:stroke-green-600" />
+                        </Link>
+                        <DeleteProductDialog
+                          key={product._id}
+                          productId={product._id}
+                          productName={product.productName}
+                          setProducts={setProducts}
+                        >
+                          <Trash2Icon className="h-5 w-5 stroke-secondary-red hover:cursor-pointer hover:stroke-red-600" />
+                        </DeleteProductDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </>
+            ) : (
+              <TableRow>
+                <TableCell colSpan={10} className="text-center font-medium text-neutral-400">No Products</TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
 
@@ -182,6 +198,7 @@ const ProductsPage = () => {
               </SelectContent>
             </Select>
           </div>
+
           <Pagination className="mx-0 mt-5 w-fit">
             <PaginationContent>
               <PaginationItem>

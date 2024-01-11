@@ -25,6 +25,7 @@ const productSchemaBase = z.object({
     .min(1, { message: "Enter product price" })
     .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter valid price"),
   productBrand: z.string().min(1, { message: "Enter product brand" }),
+  productCategory: z.string().min(1, { message: "Choose Category" }),
   productAvailable: z
     .boolean({
       required_error: "Enter the availability product",
@@ -91,38 +92,43 @@ export const addProductSchema = z
 export const editProductSchema = z
   .object({
     productPicture: z
-      .instanceof(FileList)
-      .refine(
-        (files) => {
-          // Check if all items in the array are instances of the File object
-          for (let i = 0; i < files.length; i++) {
-            return files[i] instanceof File;
-          }
-        },
-        {
-          // If the refinement fails, throw an error with this message
-          message: "Expected a file",
-        },
-      )
-      .refine(
-        (files) => {
-          for (let i = 0; i < files.length; i++) {
-            return files[i].size <= 2000000;
-          }
-        },
-        {
-          message: "File size should be less than 2mb.",
-        },
-      )
-      .refine(
-        (files) => {
-          for (let i = 0; i < files.length; i++) {
-            return ACCEPTED_IMAGE_TYPES.includes(files[i].type);
-          }
-        },
-        {
-          message: "Only these types are allowed .jpg, .jpeg and .png",
-        },
+      .string()
+      .array()
+      .or(
+        z
+          .instanceof(FileList)
+          .refine(
+            (files) => {
+              // Check if all items in the array are instances of the File object
+              for (let i = 0; i < files.length; i++) {
+                return files[i] instanceof File;
+              }
+            },
+            {
+              // If the refinement fails, throw an error with this message
+              message: "Expected a file",
+            },
+          )
+          .refine(
+            (files) => {
+              for (let i = 0; i < files.length; i++) {
+                return files[i].size <= 2000000;
+              }
+            },
+            {
+              message: "File size should be less than 2mb.",
+            },
+          )
+          .refine(
+            (files) => {
+              for (let i = 0; i < files.length; i++) {
+                return ACCEPTED_IMAGE_TYPES.includes(files[i].type);
+              }
+            },
+            {
+              message: "Only these types are allowed .jpg, .jpeg and .png",
+            },
+          ),
       ),
   })
   .merge(productSchemaBase);

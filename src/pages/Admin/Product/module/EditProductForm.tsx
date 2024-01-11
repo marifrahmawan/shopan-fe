@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   IProduct,
-  AddProductType,
-  createProduct,
-  addProductSchema,
+  updateProduct,
+  EditProductType,
+  editProductSchema,
 } from "@/utils/api/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -37,12 +37,18 @@ const EditProductForm = () => {
   const { state } = useLocation();
   const product: IProduct = state;
 
-  const [sizeInputColumn, setSizeInputColumn] = useState(0);
-  const [colorInputColumn, setColorInputColumn] = useState(0);
-  const [dimensionInputColumn, setDimensionInputColumn] = useState(0);
+  const [sizeInputColumn, setSizeInputColumn] = useState(
+    product.productSize.length,
+  );
+  const [colorInputColumn, setColorInputColumn] = useState(
+    product.productColor.length,
+  );
+  const [dimensionInputColumn, setDimensionInputColumn] = useState(
+    product.productDimension.length,
+  );
 
-  const form = useForm<AddProductType>({
-    resolver: zodResolver(addProductSchema),
+  const form = useForm<EditProductType>({
+    resolver: zodResolver(editProductSchema),
     mode: "onTouched",
     defaultValues: {
       productName: "",
@@ -51,10 +57,10 @@ const EditProductForm = () => {
       productBrand: "",
       productAvailable: true,
       productStock: "",
-      productPicture: undefined,
-      productSize: [],
-      productColor: [],
-      productDimension: [],
+      productPicture: product.productPicture,
+      productSize: product.productSize,
+      productColor: product.productColor,
+      productDimension: product.productDimension,
     },
   });
 
@@ -96,21 +102,6 @@ const EditProductForm = () => {
   }, [form, sizeInputColumn, colorInputColumn, dimensionInputColumn]);
 
   useEffect(() => {
-    if (product.productSize.length > 0) {
-      setSizeInputColumn(product.productSize.length);
-      form.setValue("productSize", product.productSize);
-    }
-
-    if (product.productColor.length > 0) {
-      setColorInputColumn(product.productColor.length);
-      form.setValue("productColor", product.productColor);
-    }
-
-    if (product.productDimension.length > 0) {
-      setDimensionInputColumn(product.productDimension.length);
-      form.setValue("productDimension", product.productDimension);
-    }
-
     form.setValue("productName", product.productName);
     form.setValue("productDetail", product.productDetail);
     form.setValue("productPrice", product.productPrice.toString());
@@ -119,20 +110,19 @@ const EditProductForm = () => {
     form.setValue("productStock", product.productStock.toString());
   }, []);
 
-  const productSubmitHandler = async (values: AddProductType) => {
+  const productSubmitHandler = async (values: EditProductType) => {
     try {
-      // const res = await createProduct(values);
+      // console.log(values)
+      const res = await updateProduct(product._id, values);
 
-      console.log(values);
+      toast({
+        description: <p className="capitalize">{res?.message}</p>,
+      });
 
-      // toast({
-      //   description: <p className="capitalize">{res?.message}</p>,
-      // });
-
-      // setTimeout(() => {
-      //   navigate("/admin/products");
-      // }, 400);
-      // form.reset();
+      setTimeout(() => {
+        navigate("/admin/products");
+      }, 400);
+      form.reset();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -295,7 +285,7 @@ const EditProductForm = () => {
                           key={field.name}
                           placeholder="Size"
                           className="w-[200px]"
-                          value={field.value as string}
+                          value={field.value !== undefined? (field.value as string) : ""} //prettier-ignore
                           {...form.register(`productSize.${key}`)}
                         />
                       </FormControl>
@@ -337,11 +327,7 @@ const EditProductForm = () => {
                           key={field.name}
                           placeholder="Color"
                           className="w-[200px]"
-                          value={
-                            field.value !== undefined
-                              ? (field.value as string)
-                              : ""
-                          }
+                          value={field.value !== undefined? (field.value as string) : ""} //prettier-ignore
                           {...form.register(`productColor.${key}`)}
                         />
                       </FormControl>
@@ -386,6 +372,7 @@ const EditProductForm = () => {
                           placeholder="Dimension"
                           type="text"
                           className="w-[200px]"
+                          value={field.value !== undefined? (field.value as string) : ""} //prettier-ignore
                           {...form.register(`productDimension.${key}`)}
                         />
                       </FormControl>
