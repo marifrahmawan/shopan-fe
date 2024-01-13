@@ -72,7 +72,7 @@
     @apply ml-[20px] list-decimal;
   }
   blockquote {
-    @apply border-l-2 border-[#0d0d0d] pl-4 dark:border-white dark:bg-neutral-700 rounded-r-md bg-gray-200;
+    @apply rounded-r-md border-l-2 border-[#0d0d0d] bg-gray-200 pl-4 dark:border-white dark:bg-neutral-700;
   }
 }
 

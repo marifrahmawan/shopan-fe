@@ -5,7 +5,7 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 export interface ICategory {
   _id: string;
   categoryName: string;
-  catogoryPicture: string;
+  categoryImage: string;
 }
 
 const categorySchemaBase = z.object({

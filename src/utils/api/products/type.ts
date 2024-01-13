@@ -6,6 +6,7 @@ export interface IProduct {
   _id: string;
   productName: string;
   productDetail: string;
+  productCategory: string;
   productPrice: number;
   productPicture: string[];
   productBrand: string;
@@ -36,11 +37,7 @@ const productSchemaBase = z.object({
     .min(1, { message: "Enter product stock" })
     .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter valid stock"),
   productSize: z.array(
-    z
-      .string()
-      .min(1, { message: "Enter product size" })
-      .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter a number")
-      .optional(),
+    z.string().min(1, { message: "Enter product size" }).optional(),
   ),
   productColor: z.array(
     z.string().min(1, { message: "Enter product color" }).optional(),
@@ -53,24 +50,20 @@ const productSchemaBase = z.object({
 export const addProductSchema = z
   .object({
     productPicture: z
-      .instanceof(FileList)
+      .instanceof(File, {message: "Select an Image"})
       .refine(
         (files) => {
           // Check if all items in the array are instances of the File object
-          for (let i = 0; i < files.length; i++) {
-            return files[i] instanceof File;
-          }
+          return files.name !== "";
         },
         {
           // If the refinement fails, throw an error with this message
-          message: "Expected a file",
+          message: "Select an Image",
         },
       )
       .refine(
         (files) => {
-          for (let i = 0; i < files.length; i++) {
-            return files[i].size <= 2000000;
-          }
+          return files.size <= 2000000;
         },
         {
           message: "File size should be less than 2mb.",
@@ -78,14 +71,13 @@ export const addProductSchema = z
       )
       .refine(
         (files) => {
-          for (let i = 0; i < files.length; i++) {
-            return ACCEPTED_IMAGE_TYPES.includes(files[i].type);
-          }
+          return ACCEPTED_IMAGE_TYPES.includes(files.type);
         },
         {
           message: "Only these types are allowed .jpg, .jpeg and .png",
         },
-      ),
+      )
+      .array(),
   })
   .merge(productSchemaBase);
 
@@ -96,13 +88,11 @@ export const editProductSchema = z
       .array()
       .or(
         z
-          .instanceof(FileList)
+          .instanceof(File)
           .refine(
             (files) => {
               // Check if all items in the array are instances of the File object
-              for (let i = 0; i < files.length; i++) {
-                return files[i] instanceof File;
-              }
+              return files.name !== "";
             },
             {
               // If the refinement fails, throw an error with this message
@@ -111,9 +101,7 @@ export const editProductSchema = z
           )
           .refine(
             (files) => {
-              for (let i = 0; i < files.length; i++) {
-                return files[i].size <= 2000000;
-              }
+              return files.size <= 2000000;
             },
             {
               message: "File size should be less than 2mb.",
@@ -121,14 +109,13 @@ export const editProductSchema = z
           )
           .refine(
             (files) => {
-              for (let i = 0; i < files.length; i++) {
-                return ACCEPTED_IMAGE_TYPES.includes(files[i].type);
-              }
+              return ACCEPTED_IMAGE_TYPES.includes(files.type);
             },
             {
               message: "Only these types are allowed .jpg, .jpeg and .png",
             },
-          ),
+          )
+          .array(),
       ),
   })
   .merge(productSchemaBase);

@@ -55,11 +55,7 @@ export const createProduct = async (body: AddProductType) => {
     let key: keyof typeof body;
 
     for (key in body) {
-      if (body[key] instanceof FileList) {
-        for (let i = 0; i < (body[key] as FileList).length; i++) {
-          formData.append(`${key}`, (body[key] as FileList)[i]);
-        }
-      } else if (body[key] instanceof Array) {
+      if (body[key] instanceof Array) {
         for (let i = 0; i < (body[key] as Array<string | number>).length; i++) {
           formData.append(`${key}[]`, (body[key] as Array<string>)[i]);
         }
@@ -91,19 +87,29 @@ export const updateProduct = async (
 
     let key: keyof typeof body;
 
+    // for (key in body) {
+    //   if (body[key] instanceof FileList) {
+    //     for (let i = 0; i < (body[key] as FileList).length; i++) {
+    //       formData.append(`${key}`, (body[key] as FileList)[i]);
+    //     }
+    //   } else if (body[key] instanceof Array) {
+    //     if ((body[key] as Array<string | number>).length > 0) {
+    //       //prettier-ignore
+    //       for (let i = 0; i < (body[key] as Array<string | number>).length; i++) {
+    //         formData.append(`${key}[]`, (body[key] as Array<string>)[i]);
+    //       }
+    //     } else {
+    //       formData.append(`${key}[]`, body[key] as Array<string>[0]);
+    //     }
+    //   } else {
+    //     formData.append(key, body[key] as string);
+    //   }
+    // }
+
     for (key in body) {
-      if (body[key] instanceof FileList) {
-        for (let i = 0; i < (body[key] as FileList).length; i++) {
-          formData.append(`${key}`, (body[key] as FileList)[i]);
-        }
-      } else if (body[key] instanceof Array) {
-        if ((body[key] as Array<string | number>).length > 0) {
-          //prettier-ignore
-          for (let i = 0; i < (body[key] as Array<string | number>).length; i++) { 
-            formData.append(`${key}[]`, (body[key] as Array<string>)[i]);
-          }
-        } else {
-          formData.append(`${key}[]`, body[key] as Array<string>[0]);
+      if (body[key] instanceof Array) {
+        for (let i = 0; i < (body[key] as Array<string | number>).length; i++) {
+          formData.append(`${key}[]`, (body[key] as Array<string>)[i]);
         }
       } else {
         formData.append(key, body[key] as string);

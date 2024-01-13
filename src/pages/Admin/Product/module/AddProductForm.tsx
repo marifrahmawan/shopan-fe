@@ -27,6 +27,8 @@ import TipTap from "@/components/AdminComponents/TipTap";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { ICategory, getCategory } from "@/utils/api/category";
+import { CustomHttpError } from "@/utils/api/CustomHttpError";
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -34,10 +36,10 @@ const AddProductForm = () => {
   const [sizeInputColumn, setSizeInputColumn] = useState(0);
   const [colorInputColumn, setColorInputColumn] = useState(0);
   const [dimensionInputColumn, setDimensionInputColumn] = useState(0);
+  const [categoryData, setCategoryData] = useState<ICategory[] | undefined>([]);
 
   const form = useForm<AddProductType>({
     resolver: zodResolver(addProductSchema),
-    mode: "onTouched",
     defaultValues: {
       productName: "",
       productDetail: "",
@@ -52,6 +54,25 @@ const AddProductForm = () => {
       productDimension: [],
     },
   });
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const res = await getCategory();
+
+        setCategoryData(res?.data);
+      } catch (error) {
+        if (error instanceof CustomHttpError) {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          });
+        }
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
 
   useEffect(() => {
     const watchSizeInput = form.watch("productSize");
@@ -113,7 +134,7 @@ const AddProductForm = () => {
   };
 
   return (
-    <div className="w-[900px]">
+    <div className="w-[900px] pb-7">
       <p className="mb-5 w-full text-[22px] font-semibold">Add Products</p>
 
       <Form {...form}>
@@ -162,8 +183,11 @@ const AddProductForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="true">Sepatu</SelectItem>
-                    <SelectItem value="false">Baju</SelectItem>
+                    {categoryData?.map((data) => (
+                      <SelectItem key={data._id} value={data.categoryName}>
+                        {data.categoryName}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -187,17 +211,117 @@ const AddProductForm = () => {
 
           <FormField
             control={form.control}
-            name="productPicture"
-            render={() => (
+            name="productPicture.0"
+            render={({ field }) => (
               <FormItem className="mt-5 w-[300px]">
-                <FormLabel>Product Pictures</FormLabel>
+                <FormLabel>Product Pictures 1</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Product Pictures"
+                    placeholder="Product Pictures 1"
                     type="file"
-                    multiple={true}
+                    multiple={false}
                     accept="image/jpg, image/jpeg, image/png"
-                    {...form.register("productPicture")}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.1"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 2</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 2"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.2"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 3</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 3"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.3"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 4</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 4"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.4"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 5</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 5"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : new File([], ""),
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />

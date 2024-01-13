@@ -11,7 +11,7 @@ import {
 import { PencilIcon, PlusCircle, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import AddCategoryForm from "./Module/AddCategoryForm";
+import AddEditCategoryForm from "./Module/AddEditCategoryForm";
 import { ICategory, getCategory } from "@/utils/api/category";
 import { CustomHttpError } from "@/utils/api/CustomHttpError";
 import DeleteCategoryDialog from "./Module/DeleteCategoryDialog";
@@ -42,11 +42,11 @@ const Category = () => {
       <p className="mb-5 w-full text-[22px] font-semibold">Category List</p>
 
       <div className="flex w-full gap-2 rounded-lg border p-2">
-        <AddCategoryForm setCategoryData={setCategoryData}>
+        <AddEditCategoryForm setCategoryData={setCategoryData}>
           <Button className="h-[30px] w-fit">
             <PlusCircle className="mr-2 h-4 w-4" /> Create
           </Button>
-        </AddCategoryForm>
+        </AddEditCategoryForm>
       </div>
 
       <div className="mt-2 w-full rounded-lg border p-2">
@@ -65,7 +65,13 @@ const Category = () => {
                 <TableCell>{data.categoryName}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <PencilIcon className="h-5 w-5 stroke-secondary-green hover:cursor-pointer hover:stroke-green-600" />
+                    <AddEditCategoryForm
+                      setCategoryData={setCategoryData}
+                      mode="edit"
+                      categoryData={data}
+                    >
+                      <PencilIcon className="h-5 w-5 stroke-secondary-green hover:cursor-pointer hover:stroke-green-600" />
+                    </AddEditCategoryForm>
                     <DeleteCategoryDialog
                       categoryId={data._id}
                       categoryName={data.categoryName}

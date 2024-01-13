@@ -7,10 +7,11 @@ export interface ICart {
       _id: string;
       productName: string;
       productDetail: string;
+      productCategory: string;
       productPrice: number;
       productPicture: string[];
       productBrand: string;
-      productAvailabel: boolean;
+      productAvailable: boolean;
       productStock: number;
       productSize?: string[];
       productColor?: string[];

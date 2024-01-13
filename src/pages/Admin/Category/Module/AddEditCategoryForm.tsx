@@ -22,10 +22,13 @@ import { toast } from "@/components/ui/use-toast";
 import { CustomHttpError } from "@/utils/api/CustomHttpError";
 import {
   AddCategoryType,
+  EditCategoryType,
   ICategory,
   addCategory,
   addCategorySchema,
+  editCategorySchema,
   getCategory,
+  updateCategory,
 } from "@/utils/api/category";
 
 import { useForm } from "react-hook-form";
@@ -34,33 +37,40 @@ import { Loader2Icon } from "lucide-react";
 
 interface IProps {
   children: React.ReactNode;
-  setCategoryData: React.Dispatch<React.SetStateAction<ICategory[] | undefined>>
+  setCategoryData: React.Dispatch<React.SetStateAction<ICategory[] | undefined>> //prettier-ignore
+  mode?: string;
+  categoryData?: ICategory;
 }
 
-const AddCategoryForm = (props: IProps) => {
-  const { children, setCategoryData } = props;
+const AddEditCategoryForm = (props: IProps) => {
+  const { children, setCategoryData, mode, categoryData } = props;
   const [isOpen, setIsOpen] = useState(false);
 
-  const form = useForm<AddCategoryType>({
-    resolver: zodResolver(addCategorySchema),
+  const form = useForm<AddCategoryType | EditCategoryType>({
+    resolver: zodResolver(
+      mode !== "edit" ? addCategorySchema : editCategorySchema,
+    ),
     defaultValues: {
-      categoryName: "",
-      categoryImage: undefined,
+      categoryName: mode !== "edit" ? "" : categoryData?.categoryName,
+      categoryImage: mode !== "edit" ? undefined : categoryData?.categoryImage,
     },
   });
 
-  const submitHandler = async (data: AddCategoryType) => {
+  const submitHandler = async (data: AddCategoryType | EditCategoryType) => {
     try {
-      const res = await addCategory(data);
+      const res =
+        mode !== "edit"
+          ? await addCategory(data as AddCategoryType)
+          : await updateCategory(categoryData?._id, data as EditCategoryType);
       toast({
         description: res?.message,
       });
 
-      form.reset();
-      const fetchCategory = await getCategory()
-
-      setCategoryData(fetchCategory?.data)
+      const fetchCategory = await getCategory();
+      
+      setCategoryData(fetchCategory?.data);
       setIsOpen(false);
+      form.reset();
     } catch (error) {
       if (error instanceof CustomHttpError) {
         toast({
@@ -150,4 +160,4 @@ const AddCategoryForm = (props: IProps) => {
   );
 };
 
-export default AddCategoryForm;
+export default AddEditCategoryForm;

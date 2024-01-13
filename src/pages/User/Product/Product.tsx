@@ -11,7 +11,7 @@ import ProductReviews from "@/components/ProductReviews";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
-import { cn } from "@/utils/utils";
+import { RpConvertion, cn } from "@/utils/utils";
 
 import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
 import { ADD_PRODUCT_TO_CART } from "@/utils/redux/userCartSlice";
@@ -84,7 +84,7 @@ const Product = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container mt-7">
       <ScrollRestoration />
       <div className="flex flex-col gap-12 lg:flex-row">
         <div className="max-w-full flex-1 lg:max-w-[600px]">
@@ -102,7 +102,7 @@ const Product = () => {
 
         <div className="flex-1">
           <div className="border-6eutral-400 border-b pb-4">
-            <h4 className="font-medium">{product?.productName}</h4>
+            <h4 className="font-medium text-[26px]">{product?.productName}</h4>
             <div className="flex">
               <div className="flex items-center">
                 <Star className="w h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
@@ -139,13 +139,8 @@ const Product = () => {
                 : "Lihat Selengkapnya"}
             </Button>
             <span className="mt-6 flex items-center gap-3">
-              <h6 className="font-medium text-secondary-green">
-                {new Intl.NumberFormat("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                  maximumFractionDigits: 0,
-                  minimumFractionDigits: 0,
-                }).format(product?.productPrice as number)}
+              <h6 className="font-semibold text-secondary-green text-[18px]">
+                {RpConvertion(product?.productPrice)}
               </h6>
               <p className="text-[20px] text-neutral-400 line-through">$650</p>
             </span>
@@ -187,14 +182,18 @@ const Product = () => {
                 <div className="mt-5">
                   <p className="font-medium">Choose colors</p>
                   <section className="mt-1 flex gap-2">
-                    {product.productColor.map((color) => (
+                    {product.productColor.map((dataColor) => (
                       <Button
                         variant="outline"
                         size="sm"
-                        key={color}
-                        onClick={() => setColor(color)}
+                        key={dataColor}
+                        onClick={() => setColor(dataColor)}
+                        className={cn(
+                          "hover:bg-secondary-orange",
+                          `${color === dataColor ? "bg-secondary-orange" : ""}`,
+                        )}
                       >
-                        {color}
+                        {dataColor}
                       </Button>
                     ))}
                   </section>
@@ -205,14 +204,18 @@ const Product = () => {
                 <div className="mt-5">
                   <p className="font-medium">Choose size</p>
                   <section className="mt-1 flex gap-2">
-                    {product.productSize.map((size) => (
+                    {product.productSize.map((dataSize) => (
                       <Button
                         variant="outline"
                         size="icon"
-                        key={size}
-                        onClick={() => setSize(size)}
+                        key={dataSize}
+                        onClick={() => setSize(dataSize)}
+                        className={cn(
+                          "hover:bg-secondary-orange",
+                          `${size === dataSize ? "bg-secondary-orange" : ""}`,
+                        )}
                       >
-                        {size}
+                        {dataSize}
                       </Button>
                     ))}
                   </section>
@@ -223,14 +226,18 @@ const Product = () => {
                 <div className="mt-5">
                   <p className="font-medium">Choose dimensions</p>
                   <section className="mt-1 flex gap-2">
-                    {product!.productDimension.map((dimension) => (
+                    {product!.productDimension.map((dataDimension) => (
                       <Button
                         variant="outline"
                         size="icon"
-                        key={dimension}
-                        onClick={() => setDimension(dimension)}
+                        key={dataDimension}
+                        onClick={() => setDimension(dataDimension)}
+                        className={cn(
+                          "hover:bg-secondary-orange",
+                          `${dimension === dataDimension ? "bg-secondary-orange" : ""}`,
+                        )}
                       >
-                        {dimension}
+                        {dataDimension}
                       </Button>
                     ))}
                   </section>
@@ -278,7 +285,7 @@ const Product = () => {
 
           <div className="mt-5 flex gap-7 pb-5 text-[12px]">
             <p className="font-medium">Category</p>
-            <p className="text-neutral-400">Living Room, Bedroom</p>
+            <p className="text-neutral-400">{product?.productCategory}</p>
           </div>
         </div>
       </div>

@@ -5,11 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function RpConvertion(price: number) {
+export function RpConvertion(price: number | undefined) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0,
     minimumFractionDigits: 0,
-  }).format(price);
+  }).format(price as number);
 }

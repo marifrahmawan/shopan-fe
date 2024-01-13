@@ -28,14 +28,15 @@ import TipTap from "@/components/AdminComponents/TipTap";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useLocation, useNavigate } from "react-router-dom";
-
-// import { Textarea } from "@/components/ui/textarea";
+import { ICategory, getCategory } from "@/utils/api/category";
+import { CustomHttpError } from "@/utils/api/CustomHttpError";
 
 const EditProductForm = () => {
   const navigate = useNavigate();
 
   const { state } = useLocation();
   const product: IProduct = state;
+  const [categoryData, setCategoryData] = useState<ICategory[] | undefined>([]);
 
   const [sizeInputColumn, setSizeInputColumn] = useState(
     product.productSize.length,
@@ -53,6 +54,7 @@ const EditProductForm = () => {
     defaultValues: {
       productName: "",
       productDetail: "",
+      productCategory: "",
       productPrice: "",
       productBrand: "",
       productAvailable: true,
@@ -63,6 +65,25 @@ const EditProductForm = () => {
       productDimension: product.productDimension,
     },
   });
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const res = await getCategory();
+
+        setCategoryData(res?.data);
+      } catch (error) {
+        if (error instanceof CustomHttpError) {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          });
+        }
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
 
   useEffect(() => {
     const watchSizeInput = form.watch("productSize");
@@ -104,15 +125,16 @@ const EditProductForm = () => {
   useEffect(() => {
     form.setValue("productName", product.productName);
     form.setValue("productDetail", product.productDetail);
+    form.setValue("productCategory", product.productCategory);
     form.setValue("productPrice", product.productPrice.toString());
     form.setValue("productBrand", product.productBrand);
     form.setValue("productAvailable", product.productAvailable);
     form.setValue("productStock", product.productStock.toString());
+    form.setValue("productPicture", product.productPicture);
   }, []);
 
   const productSubmitHandler = async (values: EditProductType) => {
     try {
-      // console.log(values)
       const res = await updateProduct(product._id, values);
 
       toast({
@@ -134,7 +156,7 @@ const EditProductForm = () => {
   };
 
   return (
-    <div className="w-[900px] pb-5">
+    <div className="w-[900px] pb-7">
       <p className="mb-5 w-full border-b pb-2 text-[22px] font-semibold">
         {product.productName}
       </p>
@@ -162,16 +184,39 @@ const EditProductForm = () => {
               <FormItem className="mt-5">
                 <FormLabel>Detail Product</FormLabel>
                 <FormControl>
-                  {/* <Textarea
-                    placeholder="Product Details"
-                    {...field}
-                    className="h-[200px]"
-                  /> */}
                   <TipTap
                     fieldName={product.productDetail}
                     onChange={field.onChange}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productCategory"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={product.productCategory}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Category " />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categoryData?.map((data) => (
+                      <SelectItem key={data._id} value={data.categoryName}>
+                        {data.categoryName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -193,17 +238,69 @@ const EditProductForm = () => {
 
           <FormField
             control={form.control}
-            name="productPicture"
-            render={() => (
+            name="productPicture.0"
+            render={({ field }) => (
               <FormItem className="mt-5 w-[300px]">
-                <FormLabel>Product Pictures</FormLabel>
+                <FormLabel>Product Pictures 1</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Product Pictures"
+                    placeholder="Product Pictures 1"
                     type="file"
-                    multiple
+                    multiple={false}
                     accept="image/jpg, image/jpeg, image/png"
-                    {...form.register("productPicture")}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.1"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 2</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 2"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.2"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 3</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 3"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />

@@ -5,10 +5,34 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ArrowRight, Image } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { ICategory, getCategory } from "@/utils/api/category";
+import { CustomHttpError } from "@/utils/api/CustomHttpError";
+import { toast } from "./ui/use-toast";
 
 const CategoryCard = () => {
+  const [categoryData, setCategoryData] = useState<ICategory[] | undefined>([]);
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const res = await getCategory();
+
+        setCategoryData(res?.data);
+      } catch (error) {
+        if (error instanceof CustomHttpError) {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          });
+        }
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
   return (
     <>
       <h3 className="mb-3 text-xl font-semibold tracking-tight">Category</h3>
@@ -19,17 +43,21 @@ const CategoryCard = () => {
         }}
       >
         <CarouselContent className="-ml-1">
-          {Array.from({ length: 19 }, (_, index) => {
+          {categoryData?.map((category) => {
             return (
               <CarouselItem
-                key={index}
+                key={category._id}
                 className="pl-1 md:basis-28 lg:basis-[134px]"
               >
                 <div className="p-1">
                   <Card className="h-[160px] min-w-[120px] py-2">
-                    <Image className="h-[110px] w-full" />
-                    <p className="text-center text-[12px]">
-                      Category {index + 1}
+                    <img
+                      className="h-[110px] w-full object-contain"
+                      src={category.categoryImage}
+                      alt={category.categoryImage}
+                    />
+                    <p className="text-center text-[12px] font-medium">
+                      {category.categoryName}
                     </p>
                   </Card>
                 </div>

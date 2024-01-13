@@ -23,7 +23,6 @@ export const getCategory = async () => {
 export const addCategory = async (body: AddCategoryType) => {
   try {
     const formData = new FormData();
-
     let key: keyof typeof body;
 
     for (key in body) {
@@ -49,13 +48,24 @@ export const addCategory = async (body: AddCategoryType) => {
 };
 
 export const updateCategory = async (
-  categoryId: string,
+  categoryId: string | undefined,
   body: EditCategoryType,
 ) => {
+  const formData = new FormData();
+  let key: keyof typeof body;
+
+  for (key in body) {
+    if (body[key] instanceof File) {
+      formData.append(`${key}`, body[key] as File);
+    } else {
+      formData.append(key, body[key] as string);
+    }
+  }
+
   try {
     const res = await axiosWithConfig.put(
       `/category/update/${categoryId}`,
-      body,
+      formData,
     );
 
     return res.data as IResponse;

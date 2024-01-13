@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 
 import FlyoutCartItem from "./FlyoutCartItem";
 import { useAppSelector } from "@/utils/redux/hooks";
+import { Link } from "react-router-dom";
 
 interface IProps {
   children: ReactNode;
@@ -46,12 +47,11 @@ const FlyoutCart = (props: IProps) => {
 
         <div className="absolute bottom-3 w-full pr-12">
           <div className="flex w-full flex-col items-center">
-            <Button className="mb-4 w-full rounded-lg py-3 font-medium">
-              Checkout
-            </Button>
-            <a href="./" className="text-[14px] font-semibold underline">
-              View Cart
-            </a>
+            <Link to="/cart" className="w-full">
+              <Button className="mb-4 w-full rounded-lg py-3 font-medium">
+                View Cart
+              </Button>
+            </Link>
           </div>
         </div>
       </SheetContent>

@@ -37,7 +37,7 @@ const LatestProduct = () => {
 
   return (
     <Carousel
-      className="mb-5 min-w-full max-w-sm"
+      className="min-w-full max-w-sm"
       opts={{
         slidesToScroll: 1,
       }}
@@ -54,7 +54,7 @@ const LatestProduct = () => {
           </Link>
         </div>
       </div>
-      <CarouselContent className="-ml-1">
+      <CarouselContent className="-ml-1 mb-5 mt-1">
         {newArrivalProducts?.map((product) => {
           return (
             <CarouselItem
