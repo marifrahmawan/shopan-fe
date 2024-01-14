@@ -9,11 +9,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import shopanLogo from "../assets/img/shopan-logo.png";
 import { Search, ShoppingBag } from "lucide-react";
-import DropDownUserMenu from "./DropDownUserMenu";
 import { Button } from "./ui/button";
 
 type IProps = {
@@ -92,21 +89,8 @@ const MobileMenu = (props: IProps) => {
               <ShoppingBag className="h-7 w-7 hover:cursor-pointer" />
             </span>
           </a>
-          <DropDownUserMenu>
-            <div className="mb-5 flex justify-between border-b pb-4 pt-1">
-              <p>Profile</p>
-              <span className="relative h-7 w-7">
-                <Avatar className="h-full w-full">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </span>
-            </div>
-          </DropDownUserMenu>
-          <Button className="hover:bg-neutral-400 w-full rounded-lg py-3 font-medium">
+
+          <Button className="w-full rounded-lg py-3 font-medium hover:bg-neutral-400">
             Sign Up
           </Button>
         </div>

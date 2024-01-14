@@ -10,8 +10,13 @@ import Product from "@/pages/User/Product/Product";
 
 import AdminLayout from "@/components/Layout/AdminLayout";
 import AdminHomePage from "@/pages/Admin";
-import ProductsPage from "@/pages/Admin/Product/AdminProduct";
+import ProductsPage from "@/pages/Admin/Product";
 import AddProductForm from "@/pages/Admin/Product/module/AddProductForm";
+import AdminProtectedRoutes from "./AdminProtectedRoutes";
+import AuthProtectedRoutes from "./AuthProtectedRoutes";
+import Category from "@/pages/Admin/Category";
+import EditProductForm from "@/pages/Admin/Product/module/EditProductForm";
+import Cart from "@/pages/User/Cart/Cart";
 
 export const router = createBrowserRouter([
   {
@@ -30,37 +35,64 @@ export const router = createBrowserRouter([
         path: "product/:product_id",
         element: <Product />,
       },
+      {
+        path: "cart",
+        element: <Cart />,
+      },
     ],
   },
   {
-    path: "admin",
-    element: <AdminLayout />,
+    element: <AdminProtectedRoutes />,
     children: [
       {
-        index: true,
-        element: <AdminHomePage />,
-      },
-      {
-        path: "products",
+        path: "/admin",
+        element: <AdminLayout />,
         children: [
           {
             index: true,
-            element: <ProductsPage />,
+            element: <AdminHomePage />,
           },
           {
-            path: "create",
-            element: <AddProductForm />,
+            path: "products",
+            children: [
+              {
+                index: true,
+                element: <ProductsPage />,
+              },
+              {
+                path: "create",
+                element: <AddProductForm />,
+              },
+              {
+                path: "edit/:product_id",
+                element: <EditProductForm />,
+              },
+            ],
+          },
+          {
+            path: "category",
+            children: [
+              {
+                index: true,
+                element: <Category />,
+              },
+            ],
           },
         ],
       },
     ],
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
+    element: <AuthProtectedRoutes />,
+    children: [
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+    ],
   },
 ]);

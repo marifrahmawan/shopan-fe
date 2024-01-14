@@ -57,9 +57,26 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .tiptap {
+    @apply text-[12px];
+  }
+
+  .tiptap pre {
+    @apply w-full rounded-[5px] bg-[#333333] p-[5px];
+  }
+  .tiptap ul {
+    @apply ml-[20px] list-disc;
+  }
+  .tiptap ol {
+    @apply ml-[20px] list-decimal;
+  }
+  blockquote {
+    @apply rounded-r-md border-l-2 border-[#0d0d0d] bg-gray-200 pl-4 dark:border-white dark:bg-neutral-700;
+  }
 }
 
-h1 {
+/* h1 {
   font-size: 84px;
 }
 
@@ -81,34 +98,8 @@ h5 {
 
 h6 {
   font-size: 28px;
-}
+} */
 
-img {
-  object-fit: cover;
-  aspect-ratio: auto;
-  object-position: center;
-}
-
-pre {
-  width: 100%;
-  padding: 5px;
-  border-radius: 5px;
-  width: 100%;
-  background-color: #333333;
-  color: #fff;
-}
-
-ul {
-  list-style-type: disc;
-  margin-left: 20px;
-}
-
-ol {
-  list-style-type: decimal;
-  margin-left: 20px;
-}
-
-blockquote {
-  padding-left: 1rem;
-  border-left: 2px solid #0d0d0d;
+li.thumb {
+  height: 100px;
 }

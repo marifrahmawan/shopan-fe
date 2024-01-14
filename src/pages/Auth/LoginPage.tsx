@@ -1,23 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
-import loginImage from "@/assets/img/login.png";
+import { Link } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
+import loginImage from "@/assets/img/login.png";
 import Input from "@/components/CustomForm/Input";
+import { Toaster } from "@/components/ui/toaster";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 import shopanLogo from "@/assets/img/shopan-logo.png";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { ILogin, loginSchema, loginUser } from "@/utils/api/auth";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
-import { Link, useNavigate } from "react-router-dom";
+
+import { useAppDispatch } from "@/utils/redux/hooks";
+import { LOGIN_USER_INFO } from "@/utils/redux/userLoginSlice";
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   const {
@@ -42,7 +46,7 @@ const LoginPage = () => {
         description: "Logged in",
       });
 
-      navigate("/");
+      dispatch(LOGIN_USER_INFO({ data: res!.data }));
     } catch (error: any) {
       toast({
         title: "Something went wrong",

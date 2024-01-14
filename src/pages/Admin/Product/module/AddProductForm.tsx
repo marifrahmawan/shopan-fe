@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  ProductType,
+  AddProductType,
+  addProductSchema,
   createProduct,
-  productSchema,
 } from "@/utils/api/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -27,6 +27,8 @@ import TipTap from "@/components/AdminComponents/TipTap";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { ICategory, getCategory } from "@/utils/api/category";
+import { CustomHttpError } from "@/utils/api/CustomHttpError";
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -34,23 +36,43 @@ const AddProductForm = () => {
   const [sizeInputColumn, setSizeInputColumn] = useState(0);
   const [colorInputColumn, setColorInputColumn] = useState(0);
   const [dimensionInputColumn, setDimensionInputColumn] = useState(0);
+  const [categoryData, setCategoryData] = useState<ICategory[] | undefined>([]);
 
-  const form = useForm<ProductType>({
-    resolver: zodResolver(productSchema),
-    mode: "onTouched",
+  const form = useForm<AddProductType>({
+    resolver: zodResolver(addProductSchema),
     defaultValues: {
       productName: "",
       productDetail: "",
       productPrice: "",
+      productCategory: "",
       productBrand: "",
       productAvailable: true,
       productStock: "",
-      productPicture: [],
+      productPicture: undefined,
       productSize: [],
       productColor: [],
       productDimension: [],
     },
   });
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const res = await getCategory();
+
+        setCategoryData(res?.data);
+      } catch (error) {
+        if (error instanceof CustomHttpError) {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          });
+        }
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
 
   useEffect(() => {
     const watchSizeInput = form.watch("productSize");
@@ -69,8 +91,8 @@ const AddProductForm = () => {
 
     if (watchColorInput.length > colorInputColumn) {
       watchColorInput.splice(
-        watchSizeInput.length - colorInputColumn,
-        watchSizeInput.length - colorInputColumn,
+        watchColorInput.length - colorInputColumn,
+        watchColorInput.length - colorInputColumn,
       );
     }
 
@@ -89,7 +111,7 @@ const AddProductForm = () => {
     }
   }, [form, sizeInputColumn, colorInputColumn, dimensionInputColumn]);
 
-  const productSubmitHandler = async (values: ProductType) => {
+  const productSubmitHandler = async (values: AddProductType) => {
     try {
       const res = await createProduct(values);
 
@@ -99,7 +121,8 @@ const AddProductForm = () => {
 
       setTimeout(() => {
         navigate("/admin/products");
-      }, 600);
+      }, 400);
+      form.reset();
     } catch (error) {
       if (error instanceof Error) {
         toast({
@@ -111,8 +134,8 @@ const AddProductForm = () => {
   };
 
   return (
-    <div className="w-[900px]">
-      <p className="mb-5 w-full text-[34px] font-semibold">Add Products</p>
+    <div className="w-[900px] pb-7">
+      <p className="mb-5 w-full text-[22px] font-semibold">Add Products</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(productSubmitHandler)}>
@@ -146,6 +169,34 @@ const AddProductForm = () => {
 
           <FormField
             control={form.control}
+            name="productCategory"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value.toString()}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Category " />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categoryData?.map((data) => (
+                      <SelectItem key={data._id} value={data.categoryName}>
+                        {data.categoryName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="productPrice"
             render={({ field }) => (
               <FormItem className="mt-5 w-[300px]">
@@ -160,17 +211,117 @@ const AddProductForm = () => {
 
           <FormField
             control={form.control}
-            name="productPicture"
-            render={() => (
+            name="productPicture.0"
+            render={({ field }) => (
               <FormItem className="mt-5 w-[300px]">
-                <FormLabel>Product Pictures</FormLabel>
+                <FormLabel>Product Pictures 1</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Product Pictures"
+                    placeholder="Product Pictures 1"
                     type="file"
-                    multiple
+                    multiple={false}
                     accept="image/jpg, image/jpeg, image/png"
-                    {...form.register("productPicture")}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.1"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 2</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 2"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.2"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 3</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 3"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.3"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 4</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 4"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : undefined,
+                      )
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="productPicture.4"
+            render={({ field }) => (
+              <FormItem className="mt-5 w-[300px]">
+                <FormLabel>Product Pictures 5</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Product Pictures 5"
+                    type="file"
+                    multiple={false}
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? e.target.files[0] : new File([], ""),
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -234,10 +385,10 @@ const AddProductForm = () => {
           <div className="mt-5 flex flex-col gap-5">
             <Button
               type="button"
-              className="w-[200px]"
+              className="flex w-[140px] min-w-[140px] max-w-[250px] justify-start"
               onClick={() => setSizeInputColumn((prevState) => prevState + 1)}
             >
-              <PlusCircle className="mr-2" /> Add Size
+              <PlusCircle className="mr-2" /> Size
             </Button>
 
             {[...Array(sizeInputColumn).keys()].map((key) => (
@@ -274,10 +425,10 @@ const AddProductForm = () => {
           <div className="mt-9 flex flex-col gap-5">
             <Button
               type="button"
-              className="w-[200px]"
+              className="flex w-[140px] min-w-[140px] max-w-[250px] justify-start"
               onClick={() => setColorInputColumn((prevState) => prevState + 1)}
             >
-              <PlusCircle className="mr-2" /> Add Color
+              <PlusCircle className="mr-2" /> Color
             </Button>
 
             {[...Array(colorInputColumn).keys()].map((key) => (
@@ -315,12 +466,12 @@ const AddProductForm = () => {
           <div className="mt-9 flex flex-col gap-5">
             <Button
               type="button"
-              className="w-[200px]"
+              className="flex w-[140px] min-w-[140px] max-w-[250px] justify-start"
               onClick={() =>
                 setDimensionInputColumn((prevState) => prevState + 1)
               }
             >
-              <PlusCircle className="mr-2" /> Add Dimension
+              <PlusCircle className="mr-2" /> Dimension
             </Button>
 
             {[...Array(dimensionInputColumn).keys()].map((key) => (
