@@ -63,7 +63,7 @@ const AdminSidebar = () => {
                 {!menuExpand && (
                   <p
                     className={cn(
-                      `invisible absolute left-full ml-1 -translate-x-3 rounded-md bg-yellow-300 px-2 py-1 text-sm opacity-20 transition-all group-hover/icon:visible group-hover/icon:translate-x-0 group-hover/icon:opacity-100`,
+                      `invisible absolute left-full ml-1 -translate-x-3 rounded-md bg-yellow-300 px-2 py-1 text-sm opacity-20 transition-all group-hover/icon:visible group-hover/icon:translate-x-0 group-hover/icon:opacity-100 dark:text-black z-10`,
                     )}
                   >
                     {label}

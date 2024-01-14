@@ -71,7 +71,6 @@ const Product = () => {
         description: <p>{res?.message}</p>,
       });
     } catch (error: any) {
-      console.log(error);
       toast({
         variant: "destructive",
         description: <p>{error.message}</p>,

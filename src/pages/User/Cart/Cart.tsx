@@ -1,39 +1,17 @@
-import { useEffect, useState } from "react";
-import { ICart, getUserCart } from "@/utils/api/cart";
-import { CustomHttpError } from "@/utils/api/CustomHttpError";
-import { toast } from "@/components/ui/use-toast";
+import { useAppSelector } from "@/utils/redux/hooks";
+import CartItem from "./CartItem";
 
 const Cart = () => {
-  const [cart, setCart] = useState<ICart | undefined>();
-
-  useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        const res = await getUserCart();
-
-        setCart(res?.data);
-      } catch (error) {
-        if (error instanceof CustomHttpError) {
-          toast({
-            variant: "destructive",
-            description: error.message,
-          });
-        }
-      }
-    };
-
-    fetchCartData();
-  }, []);
+  const cart = useAppSelector((state) => state.cart);
 
   return (
-    <div className="container">
-      <div className="grid grid-cols-1 gap-4 mt-5">
-        {cart?.products.map((data) => (
-          <div key={data._id} className="rounded-lg border p-2">
-            <p>{data.productId.productName}</p>
-          </div>
+    <div className="container mt-5 flex justify-between ">
+      <div className="grid w-[75%] grid-cols-1 gap-4">
+        {cart?.map((data) => (
+          <CartItem key={data._id} data={data} />
         ))}
       </div>
+      <div className="h-[300px] w-[300px] rounded-lg border"></div>
     </div>
   );
 };

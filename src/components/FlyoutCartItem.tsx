@@ -164,7 +164,7 @@ const FlyoutCartItem = (props: ICartItem) => {
               )}
             </div>
 
-            <div className="p-[1px flex w-fit rounded-lg border border-slate-400">
+            <div className="p-[1px] flex w-fit rounded-lg border border-slate-400">
               <button
                 className={`w-7 rounded-bl-[7px] rounded-tl-[7px] font-semibold ${
                   quantity === 0 || quantity < 0 ? "bg-red-500" : "bg-green-300"
