@@ -8,6 +8,7 @@ import {
   REDUCE_PRODUCT_FROM_CART,
   REMOVE_FROM_CART,
 } from "@/utils/redux/userCartSlice";
+import { RpConvertion } from "@/utils/utils";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
@@ -108,37 +109,51 @@ const CartItem = (props: IProps) => {
 
   return (
     <div className="h-fit rounded-lg border p-2">
-      <h4 className="font-medium">{data.productName}</h4>
       <div className="mt-2 flex items-center justify-between">
-        <section className="h-40 w-40 overflow-clip rounded-md">
-          <img src={data.productPicture} alt={data.productName} />
-        </section>
+        <div className="flex gap-3">
+          <section className="h-40 w-40 overflow-clip rounded-md">
+            <img src={data.productPicture} alt={data.productName} />
+          </section>
+          <div>
+            <h4 className="w-[300px] font-semibold">{data.productName}</h4>
+            <p className="mt-2 text-[14px] text-neutral-500">{data.color}</p>
+            <p className="mt-2 text-[14px] text-neutral-500">{data.size}</p>
+            <p className="mt-2 text-[14px] text-neutral-500">
+              {data.dimension}
+            </p>
+            <p className="mt-2 text-[14px] text-neutral-500">
+              {RpConvertion(data.price)}
+            </p>
+            <div className="mt-2 flex w-fit rounded-lg border border-slate-400 p-[1px]">
+              <button
+                className={`w-7 rounded-bl-[7px] rounded-tl-[7px] font-semibold ${
+                  quantity === 0 || quantity < 0 ? "bg-red-500" : "bg-green-300"
+                }`}
+                onClick={reduceCartHandler}
+                disabled={quantity === 0 || quantity < 0 ? true : false}
+              >
+                -
+              </button>
+              <input
+                type="text"
+                className="w-9 bg-transparent text-center"
+                disabled
+                value={quantity}
+                min={0}
+              />
+              <button
+                className="w-7 rounded-br-[7px] rounded-tr-[7px] bg-green-300 font-semibold"
+                onClick={addToCartHandler}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
 
         <section>
-          <div className="flex w-fit rounded-lg border border-slate-400 p-[1px]">
-            <button
-              className={`w-7 rounded-bl-[7px] rounded-tl-[7px] font-semibold ${
-                quantity === 0 || quantity < 0 ? "bg-red-500" : "bg-green-300"
-              }`}
-              onClick={reduceCartHandler}
-              disabled={quantity === 0 || quantity < 0 ? true : false}
-            >
-              -
-            </button>
-            <input
-              type="text"
-              className="w-9 bg-transparent text-center"
-              disabled
-              value={quantity}
-              min={0}
-            />
-            <button
-              className="w-7 rounded-br-[7px] rounded-tr-[7px] bg-green-300 font-semibold"
-              onClick={addToCartHandler}
-            >
-              +
-            </button>
-          </div>
+          <h4 className="font-medium">Total</h4>
+          <p className="text-secondary-green text-[16px] font-medium">{RpConvertion(data.totalPrice)}</p>
         </section>
 
         <button

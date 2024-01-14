@@ -25,4 +25,5 @@ export interface ICart {
     price: number;
     totalPrice: number;
   }[];
+  totalCartPrice?: number;
 }
