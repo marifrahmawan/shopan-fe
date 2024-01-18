@@ -50,11 +50,11 @@ const CategoryCard = () => {
                 className="pl-1 md:basis-28 lg:basis-[134px]"
               >
                 <div className="p-1">
-                  <Card className="h-[160px] min-w-[120px] py-2">
+                  <Card className="h-[160px] min-w-[120px] rounded-lg overflow-hidden">
                     <img
-                      className="h-[110px] w-full object-contain"
+                      className="h-[110px] w-full object-contain dark:bg-white p-1"
                       src={category.categoryImage}
-                      alt={category.categoryImage}
+                      alt={category.categoryName}
                     />
                     <p className="text-center text-[12px] font-medium">
                       {category.categoryName}
