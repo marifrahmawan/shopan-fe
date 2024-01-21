@@ -27,7 +27,6 @@ const AdminLayout = () => {
   return (
     <>
       <Toaster />
-      {/* <AdminNavbarMenu /> */}
       <div className="container flex p-0">
         <AdminSidebar />
 

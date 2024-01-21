@@ -74,6 +74,11 @@ const DropDownUserMenu = (props: IProps) => {
         {user?.role === "admin" && (
           <>
             <DropdownMenuSeparator />
+            <Link to={`/`}>
+              <DropdownMenuItem className="hover:cursor-pointer">
+                Home
+              </DropdownMenuItem>
+            </Link>
             <Link to={`/admin/`}>
               <DropdownMenuItem className="hover:cursor-pointer">
                 Dashboard
