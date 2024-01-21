@@ -30,6 +30,7 @@ const Product = () => {
   const [dimension, setDimension] = useState<string | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
   const [size, setSize] = useState<string | undefined>(undefined);
+  const [validOrder, setValidOrder] = useState(false);
 
   const fetchProduct = async () => {
     try {
@@ -82,6 +83,12 @@ const Product = () => {
     fetchProduct();
   }, []);
 
+  useEffect(() => {
+    if (color !== undefined || dimension !== undefined || size !== undefined) {
+      setValidOrder(true);
+    }
+  }, [color, size, dimension]);
+
   return (
     <div className="container mt-7">
       <ScrollRestoration />
@@ -101,7 +108,7 @@ const Product = () => {
 
         <div className="flex-1">
           <div className="border-6eutral-400 border-b pb-4">
-            <h4 className="font-medium text-[26px]">{product?.productName}</h4>
+            <h4 className="text-[26px] font-medium">{product?.productName}</h4>
             <div className="flex">
               <div className="flex items-center">
                 <Star className="w h-[16px] w-[16px] fill-yellow-500 stroke-yellow-500" />
@@ -138,10 +145,10 @@ const Product = () => {
                 : "Lihat Selengkapnya"}
             </Button>
             <span className="mt-6 flex items-center gap-3">
-              <h6 className="font-semibold text-secondary-green text-[18px]">
+              <h6 className="text-[22px] font-bold text-secondary-green">
                 {RpConvertion(product?.productPrice)}
               </h6>
-              <p className="text-[20px] text-neutral-400 line-through">$650</p>
+              {/* <p className="text-[20px] text-neutral-400 line-through">$650</p> */}
             </span>
           </div>
 
@@ -233,7 +240,11 @@ const Product = () => {
                         onClick={() => setDimension(dataDimension)}
                         className={cn(
                           "hover:bg-secondary-orange",
-                          `${dimension === dataDimension ? "bg-secondary-orange" : ""}`,
+                          `${
+                            dimension === dataDimension
+                              ? "bg-secondary-orange"
+                              : ""
+                          }`,
                         )}
                       >
                         {dataDimension}
@@ -276,6 +287,7 @@ const Product = () => {
               <Button
                 className="mt-4 w-full lg:max-w-[425px]"
                 onClick={() => addToCartHandler(product?._id as string)}
+                disabled={!validOrder}
               >
                 <ShoppingCart /> <p className="pl-4">Add to Cart</p>
               </Button>
