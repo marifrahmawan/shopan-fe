@@ -45,7 +45,6 @@ const AddProductForm = () => {
       productDetail: "",
       productPrice: "",
       productCategory: "",
-      productBrand: "",
       productAvailable: true,
       productStock: "",
       productPicture: undefined,
@@ -323,20 +322,6 @@ const AddProductForm = () => {
                       )
                     }
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="productBrand"
-            render={({ field }) => (
-              <FormItem className="mt-5 w-[300px]">
-                <FormLabel>Product Brand</FormLabel>
-                <FormControl>
-                  <Input placeholder="Product Brand" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

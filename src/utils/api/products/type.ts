@@ -9,7 +9,6 @@ export interface IProduct {
   productCategory: string;
   productPrice: number;
   productPicture: string[];
-  productBrand: string;
   productAvailable: boolean;
   productStock: number;
   productSize: string[];
@@ -25,7 +24,6 @@ const productSchemaBase = z.object({
     .string()
     .min(1, { message: "Enter product price" })
     .regex(new RegExp(/^\d*[1-9]\d*$/), "Enter valid price"),
-  productBrand: z.string().min(1, { message: "Enter product brand" }),
   productCategory: z.string().min(1, { message: "Choose Category" }),
   productAvailable: z
     .boolean({
