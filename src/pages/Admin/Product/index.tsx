@@ -78,7 +78,6 @@ const ProductsPage = () => {
             <TableRow>
               <TableHead>No. </TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Brand</TableHead>
               <TableHead className="text-center">Stock</TableHead>
               <TableHead>Size</TableHead>
               <TableHead>Color</TableHead>
@@ -98,10 +97,6 @@ const ProductsPage = () => {
                     </TableCell>
                     <TableCell className="w-[230px] min-w-[230px] font-medium">
                       {product.productName}
-                    </TableCell>
-
-                    <TableCell className="w-[120px] min-w-[120px]">
-                      {product.productBrand}
                     </TableCell>
 
                     <TableCell
@@ -176,7 +171,12 @@ const ProductsPage = () => {
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={10} className="text-center font-medium text-neutral-400">No Products</TableCell>
+                <TableCell
+                  colSpan={10}
+                  className="text-center font-medium text-neutral-400"
+                >
+                  No Products
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
