@@ -56,7 +56,6 @@ const EditProductForm = () => {
       productDetail: "",
       productCategory: "",
       productPrice: "",
-      productBrand: "",
       productAvailable: true,
       productStock: "",
       productPicture: product.productPicture,
@@ -127,7 +126,6 @@ const EditProductForm = () => {
     form.setValue("productDetail", product.productDetail);
     form.setValue("productCategory", product.productCategory);
     form.setValue("productPrice", product.productPrice.toString());
-    form.setValue("productBrand", product.productBrand);
     form.setValue("productAvailable", product.productAvailable);
     form.setValue("productStock", product.productStock.toString());
     form.setValue("productPicture", product.productPicture);
@@ -302,20 +300,6 @@ const EditProductForm = () => {
                       )
                     }
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="productBrand"
-            render={({ field }) => (
-              <FormItem className="mt-5 w-[300px]">
-                <FormLabel>Product Brand</FormLabel>
-                <FormControl>
-                  <Input placeholder="Product Brand" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
