@@ -128,7 +128,7 @@ const MenuNavbar = () => {
         </form>
 
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-0">
-          {user?.role !== "admin" && (
+          {user?.role !== "admin" && user?.accessToken !== "" && (
             <span className="relative h-7 w-7 md:mr-5">
               <span className="absolute -right-0 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-black text-[11px] font-bold text-white dark:bg-white dark:text-black">
                 {cart.length}

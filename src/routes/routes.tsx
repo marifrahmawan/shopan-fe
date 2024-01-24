@@ -18,6 +18,7 @@ import Category from "@/pages/Admin/Category";
 import EditProductForm from "@/pages/Admin/Product/module/EditProductForm";
 import Cart from "@/pages/User/Cart/Cart";
 import Checkout from "@/pages/User/Checkout";
+import UserProtectedRoutes from "./UserProtectedRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -37,15 +38,21 @@ export const router = createBrowserRouter([
         element: <Product />,
       },
       {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
+        element: <UserProtectedRoutes />,
+        children: [
+          {
+            path: "cart",
+            element: <Cart />,
+          },
+          {
+            path: "/checkout",
+            element: <Checkout />,
+          },
+        ],
       },
     ],
   },
+
   {
     element: <AdminProtectedRoutes />,
     children: [

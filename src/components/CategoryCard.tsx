@@ -10,10 +10,12 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { ICategory, getCategory } from "@/utils/api/category";
 import { CustomHttpError } from "@/utils/api/CustomHttpError";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "./ui/use-toast";
 
 const CategoryCard = () => {
   const [categoryData, setCategoryData] = useState<ICategory[] | undefined>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -21,6 +23,7 @@ const CategoryCard = () => {
         const res = await getCategory();
 
         setCategoryData(res?.data);
+        setIsLoading(false);
       } catch (error) {
         if (error instanceof CustomHttpError) {
           toast({
@@ -43,27 +46,43 @@ const CategoryCard = () => {
         }}
       >
         <CarouselContent className="-ml-1">
-          {categoryData?.map((category) => {
-            return (
-              <CarouselItem
-                key={category._id}
-                className="pl-1 md:basis-28 lg:basis-[134px]"
-              >
-                <div className="p-1">
-                  <Card className="h-[160px] min-w-[120px] rounded-lg overflow-hidden">
-                    <img
-                      className="h-[110px] w-full object-contain dark:bg-white p-1"
-                      src={category.categoryImage}
-                      alt={category.categoryName}
-                    />
-                    <p className="text-center text-[12px] font-medium">
-                      {category.categoryName}
-                    </p>
-                  </Card>
-                </div>
-              </CarouselItem>
-            );
-          })}
+          {isLoading
+            ? Array.from({ length: 10 }, (_, i) => {
+                return (
+                  <CarouselItem
+                    key={i}
+                    className="pl-1 md:basis-28 lg:basis-[134px]"
+                  >
+                    <div className="p-1">
+                      <Card className="h-[160px] min-w-[120px] overflow-hidden rounded-lg">
+                        <Skeleton className="h-full w-full" />
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                );
+              })
+            : categoryData?.map((category) => {
+                return (
+                  <CarouselItem
+                    key={category._id}
+                    className="pl-1 md:basis-28 lg:basis-[134px]"
+                  >
+                    <div className="p-1">
+                      <Card className="h-[160px] min-w-[120px] overflow-hidden rounded-lg">
+                        <img
+                          className="h-[110px] w-full object-contain p-1 dark:bg-white"
+                          src={category.categoryImage}
+                          alt={category.categoryName}
+                        />
+                        <p className="text-center text-[12px] font-medium">
+                          {category.categoryName}
+                        </p>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                );
+              })}
+
           <CarouselItem className="pl-1 md:basis-28 lg:basis-[134px]">
             <div className="p-1">
               <Card className="flex h-[160px] min-w-[120px] items-center justify-center bg-green-300 py-2">
