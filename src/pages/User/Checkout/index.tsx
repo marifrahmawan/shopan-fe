@@ -19,14 +19,18 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
-import { useAppSelector } from "@/utils/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
 import { RpConvertion } from "@/utils/utils";
+
+import { EMPTY_CART } from "@/utils/redux/userCartSlice";
 
 const Checkout = () => {
   const state = useLocation();
   const cart = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const form = useForm<UserCheckoutType>({
     resolver: zodResolver(userCheckoutSchema),
@@ -42,7 +46,15 @@ const Checkout = () => {
 
   const submitHandler = async (body: UserCheckoutType) => {
     try {
-      await addUserCheckout(body);
+      const res = await addUserCheckout(body, cart);
+      toast({
+        description: res?.message,
+      });
+
+      dispatch(EMPTY_CART());
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       if (error instanceof CustomHttpError) {
         toast({
@@ -204,7 +216,13 @@ const Checkout = () => {
             <p>Total</p>
             <p>{state.state.totalPrice}</p>
           </div>
-          <Button className="w-full mt-4" form="checkoutForm" disabled={!form.formState.isValid}>Submit</Button>
+          <Button
+            className="mt-4 w-full"
+            form="checkoutForm"
+            disabled={!form.formState.isValid}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     </div>
