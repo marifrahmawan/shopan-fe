@@ -1,14 +1,10 @@
 import { AxiosError } from "axios";
-import { UserCheckoutType } from ".";
 import axiosWithConfig from "../axiosWithConfig";
 import { IResponse } from "../types";
 import { CustomHttpError } from "../CustomHttpError";
 import { ICartRedux } from "@/utils/redux/userCartSlice";
 
-export const addUserCheckout = async (
-  body: UserCheckoutType,
-  data: ICartRedux[],
-) => {
+export const addUserCheckout = async (data: ICartRedux[]) => {
   try {
     const res = await axiosWithConfig.post("/history", { products: data });
 
