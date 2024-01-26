@@ -44,9 +44,9 @@ const Checkout = () => {
     },
   });
 
-  const submitHandler = async (body: UserCheckoutType) => {
+  const submitHandler = async () => {
     try {
-      const res = await addUserCheckout(body, cart);
+      const res = await addUserCheckout(cart);
       toast({
         description: res?.message,
       });
