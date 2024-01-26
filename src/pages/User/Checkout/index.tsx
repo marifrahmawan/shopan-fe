@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
 import { RpConvertion } from "@/utils/utils";
 
-import { EMPTY_CART, ICartRedux } from "@/utils/redux/userCartSlice";
+import { EMPTY_CART } from "@/utils/redux/userCartSlice";
 
 const Checkout = () => {
   const state = useLocation();
@@ -44,10 +44,9 @@ const Checkout = () => {
     },
   });
 
-  const submitHandler = async (body: UserCheckoutType, data: ICartRedux[]) => {
+  const submitHandler = async (body: UserCheckoutType) => {
     try {
-      data = cart;
-      const res = await addUserCheckout(body, data);
+      const res = await addUserCheckout(body, cart);
       toast({
         description: res?.message,
       });
