@@ -93,6 +93,10 @@ export const userCartSlice = createSlice({
 
       state.splice(productIndex, 1);
     },
+
+    EMPTY_CART: (state) => {
+      state.splice(0, state.length);
+    },
   },
 });
 
@@ -101,6 +105,7 @@ export const {
   ADD_PRODUCT_TO_CART,
   REDUCE_PRODUCT_FROM_CART,
   REMOVE_FROM_CART,
+  EMPTY_CART,
 } = userCartSlice.actions;
 
 export default userCartSlice.reducer;
